@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Hojo" default="package">
+  <property name="opt.debug" value="true"/><!-- FIXME -->
+
+  <property name="dir.in" value="." />
+  <property name="dir.in.java" value="${dir.in}/src"/>
+  
+  <property name="dir.out" value="build" />
+  <property name="dir.out.class" value="${dir.out}/classes" />
+  <property name="dir.out.doc" value="${dir.out}/doc" />
+  <property name="dir.out.jar" value="${dir.out}" />
+
+  <target name="clean">
+    <delete dir="${dir.out}" failonerror="false"/>
+  </target>
+
+  <target name="compile">
+    <mkdir dir="${dir.out.class}"/>
+    <javac debug="${opt.debug}" srcdir="${dir.in.java}/org" destdir="${dir.out.class}" deprecation="true" includeantruntime="false"/>
+  </target>
+
+  <target name="package" depends="compile">
+    <mkdir dir="${dir.out.jar}"/>
+    <jar destfile="${dir.out.jar}/hojo.jar" filesonly="true">
+	  <fileset dir="${dir.in}" includes="COPYING"/>
+      <fileset dir="${dir.out.class}" includes="org/xodonex/**"/>
+      <fileset dir="${dir.in.java}" includes="org/xodonex/util/ui/resource/*"/>
+      <fileset dir="${dir.in.java}" includes="org/xodonex/hojo/resource/*"/>
+      <manifest>
+        <attribute name="Main-Class" value="org.xodonex.hojo.Hojo"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="document">
+	<mkdir dir="${dir.out.doc}"/>
+	<javadoc sourcepath="${dir.in.java}" destdir="${dir.out.doc}"/>
+  </target>
+
+  <target name="test">
+	<echo message="java -jar ${dir.out.jar}/hojo.jar"/>
+  </target>
+</project>

@@ -1,0 +1,2133 @@
+<html>
+
+<head>
+<meta name="Author" content="Henrik Lauritzen">
+<title>Hojo language guide 1.05</title>
+<STYLE type="text/css">
+body 			{ color: #2E2424; background-color: #FDF8F4; font-size: 12pt }
+a:active                { color: #808080; }
+a:visited               { color: #808080; }
+a:link                  { color: #808080; }
+h1, h2, h3, h4, h5, h6  { font-family: avantgarde, sans-serif; font-weight: bold }
+h1                      { font-size: 24pt }
+h2                      { font-size: 20pt }
+h3	                { font-size: 18pt }
+.title, .subtitle	{ font-family: avantgarde, sans-serif; text-align: center }
+.title			{ font-size: 28pt; font-weight: bold }
+.subtitle		{ font-size: 12pt; font-weight: normal }
+.Hcode, .Output, .Result, .Error, .Warning { font-family: monospace; font-size: 11pt}
+.Hcode			{ color: #404040; font-style: italic }
+.Output			{ color: #2E2424; font-weight: bold }
+.Result			{ color: #000080; font-weight: bold }
+.Warning		{ color: #0000A0; font-weight: normal }
+.Error			{ color: #800000; font-weight: bold }
+.Tbl			{ color: #ffffff; background-color: #584F4F; text-align: left }
+</STYLE>
+</head>
+
+<body>
+
+<a name="top"></a>
+<DIV class="title">
+The
+<BR><img src="Hojo.gif" width="200" height="53" border-width="0" alt="Hojo">
+<BR>language guide
+</DIV>
+<p><DIV class="subtitle">
+Version 1.05
+</DIV>
+
+<p><HR align="center" width="25%">
+
+<p><DIV class="subtitle">
+<small>
+This document is &#169; by <a href="mailto:henrik.lauritzen@nomini.dk">Henrik Lauritzen</a>
+<BR>Current version: draft first edition, revised 2001-03-05.
+</small>
+</DIV>
+
+
+<p><HR align="center" width="100%"><p>
+<a name="TOC"></a><H1>Table of contents</H1><ol>
+<li value="1"><a href="#c_1">Introduction</a>
+<li value="2"><a href="#c_2">Core language</a><ol>
+	<li value="1"><a href="#c_2.1">All values are objects</a>
+	<li value="2"><a href="#c_2.2">Equality comparisons</a>
+	<li value="3"><a href="#c_2.3">Types</a>
+	<li value="4"><a href="#c_2.4">Class names</a>
+        <li value="5"><a href="#c_2.5">String literals</a>
+	<li value="6"><a href="#c_2.6">Exceptions</a>
+	<li value="7"><a href="#c_2.7">The switch statement</a>
+	<li value="8"><a href="#c_2.8">Functions without return value</a>
+	<li value="9"><a href="#c_2.9">Scope of variables</a>
+	<li value="10"><a href="#c_2.10">Array creation expressions</a>
+	<li value="11"><a href="#c_2.11">Omissions from the core language</a>
+</ol>
+<li value="3"><a href="#c_3">Extended language</a><ol>
+	<li value="1"><a href="#c_3.1">Numbers</a>
+	<li value="2"><a href="#c_3.2">Functions</a>
+	<ol>
+		<li value="1"><a href="#c_3.2.1">Function declarations</a>
+		<li value="2"><a href="#c_3.2.2">Lambda expressions</a>
+		<li value="3"><a href="#c_3.2.3">Parameter usage</a>
+		<li value="4"><a href="#c_3.2.4">Class member access functions</a>
+		<li value="5"><a href="#c_3.2.5">Special functions</a>
+	</ol>
+	<li value="3"><a href="#c_3.3">Collections and maps</a>
+	<li value="4"><a href="#c_3.4">Tuples</a>
+	<li value="5"><a href="#c_3.5">Index expressions and slices</a>
+	<li value="6"><a href="#c_3.6">Operator hierarchy</a>
+	<li value="7"><a href="#c_3.7">The let expression</a>
+	<li value="8"><a href="#c_3.8">Sequences and the for statement</a>
+	<li value="9"><a href="#c_3.9">Class declarations</a>
+	<li value="10"><a href="#c_3.10">Class instance creation expressions</a>
+</ol>
+
+<li value="4"><a href="#c_4">Meta language</a><ol>
+	<li value="1"><a href="#c_4.1">Information symbols</a>
+	<li value="2"><a href="#c_4.2">Directives</a><ol>
+		<li value="1"><a href="#c_4.2.1">Macros</a>
+		<li value="2"><a href="#c_4.2.2">Package prefixes</a>
+		<li value="3"><a href="#c_4.2.3">Type identifiers</a>
+		<li value="4"><a href="#c_4.2.4">Literals (compile-time constants)</a>
+		<li value="5"><a href="#c_4.2.5">Operators</a>
+		<li value="6"><a href="#c_4.2.6">Global variables</a>
+		<li value="7"><a href="#c_4.2.7">Input source selection</a>
+		<li value="8"><a href="#c_4.2.8">Environment control</a>
+	</ol>
+	<li value="3"><a href="#c_4.3">Conditional translation</a>
+	<li value="4"><a href="#c_4.4">OS commands</a>
+</ol>
+
+<li value="5"><a href="#c_5">Standard library</a><ol>
+	<li value="1"><a href="#c_5.1">all</a>
+	<li value="2"><a href="#c_5.2">app</a>
+	<li value="3"><a href="#c_5.3">async</a>
+	<li value="4"><a href="#c_5.4">choose</a>
+	<li value="5"><a href="#c_5.5">collate</a>
+        <li value="6"><a href="#c_5.6">copy</a>
+	<li value="7"><a href="#c_5.7">count</a>
+	<li value="8"><a href="#c_5.8">edit</a>
+	<li value="9"><a href="#c_5.9">filter</a>
+	<li value="10"><a href="#c_5.10">find</a>
+	<li value="11"><a href="#c_5.11">foldl</a>
+	<li value="12"><a href="#c_5.12">foldr</a>
+	<li value="13"><a href="#c_5.13">grep</a>
+	<li value="14"><a href="#c_5.14">help</a>
+	<li value="15"><a href="#c_5.15">iterate</a>
+	<li value="16"><a href="#c_5.16">map</a>
+	<li value="17"><a href="#c_5.17">mkLib</a>
+	<li value="18"><a href="#c_5.18">msg</a>
+	<li value="19"><a href="#c_5.19">partition</a>
+	<li value="20"><a href="#c_5.20">passwd</a>
+        <li value="21"><a href="#c_5.21">paste</a>
+	<li value="22"><a href="#c_5.22">rev</a>
+	<li value="23"><a href="#c_5.23">select</a>
+	<li value="24"><a href="#c_5.24">size</a>
+	<li value="25"><a href="#c_5.25">sort</a>
+        <li value="26"><a href="#c_5.26">split</a>
+	<li value="27"><a href="#c_5.27">subst</a>
+	<li value="28"><a href="#c_5.28">trans</a>
+        <li value="29"><a href="#c_5.29">The OS interface</a>
+</ol>
+
+<li value="6"><a href="#c_6">References</a>
+<li value="7"><a href="#c_7">Acknowledgements</a>
+</ol>
+
+
+<HR align="center" width="75%">
+<a name="c_1"></a><H1>1 Introduction</H1>
+<p>Hojo (Higer-Order functions &amp; Java<sup><small>TM</small></sup> Objects) is an interpreted language, which provides a high-level, dynamic interface to the Java Virtual Machine (JVM) on which it is run. The core of the Hojo language has been carefully designed to match the syntax and semantics of 
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#101241">statements</a> and
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/expressions.doc.html#44393">expressions</a>
+in the Java programming language. However, the true power of Hojo lies beyond the core language: Hojo allows higer-order functions, contains full syntactical support for collections, maps and arbitrary-precision numbers, and provides a wide range of automatical type conversions, as well as some additional built-in operators. The lexical syntax of the language can be dynamically configured through a meta language, such that e.g. custom operators can be defined. The translation of a Hojo script progresses in one pass, such that any data stream can be used as input and will be handled from one end to the other. In conjunction with an extensive, extensible standard library - as well as full access to the Java API - this makes Hojo well suited as a scripting language, as a command interface to any running Java program, or as a development tool for prototyping and testing Java programs.
+<p>This document provides a brief introduction to the Hojo language. Code examples are presented in the style used by the Hojo interpreter shell. Thus the example
+
+<p><DIV class="Hcode">
+#print("output") then [1, 2, 3];
+</DIV><DIV class="Output">
+output
+</DIV><DIV class="Result">
+[1,2,3] : java.util.ArrayList
+</DIV>
+
+<p>denotes that the input <SPAN class="Hcode">#print("output") then [1, 2, 3];</SPAN> produces the output <SPAN class="Output">output</SPAN>, and results in an instance of <code>java.util.ArrayList</code> whose string representation is <SPAN class="Result">[1,2,3]</SPAN>. Likewise, the example
+
+<p><div class="Hcode">
+1 / 0;
+</div><div class="Error">
+&nbsp;&nbsp;&nbsp;&nbsp;H5001: Runtime error "/ by zero" thrown from code<BR>
+(1 / 0);
+</div>
+
+<p>denotes that the input <span class="Hcode">1 / 0;</span> generates the above error message, while
+
+<p><div class="Hcode">
+int x = "87";
+</div><div class="Warning">
+&nbsp;&nbsp;&nbsp;&nbsp;H6008: Assignment of type java.lang.String to type int requires a runtime conversion
+</div><div class="Result">
+87 : java.lang.Integer
+</div>
+
+<p>denotes that the input <span class=JCode>int x = "87";</span> generates a warning before producing the integer <span class="Result">87</span>.
+
+
+<HR align="center" width="75%">
+<a name="c_2"></a><H1>2 Core language</H1>
+<p>The <i>core language</i> is the subset of the Hojo language which closely corresponds to the expression and statement syntax of the Java programming language. This section provides information on the ways in which the core language differs from the corresponding subset of the Java language. <i>Except for these differences, any legal Java statement is also a valid command in Hojo</i>.
+
+
+<p><a name="c_2.1"></a><H2>2.1 All values are objects</H2>
+In Hojo, every value is represented by an object instance (a value of a 
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/typesValues.doc.html#9317">reference type</a>
+). However, Hojo still supports the 
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/typesValues.doc.html#85587">primitive types</a>
+of the Java programming lanugage, by automatically wrapping or unwraping values of a primitive type into an object instance when required. Additionally, 
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/conversions.doc.html#26917">numeric promotions</a>
+are performed 'as usual' even though the values are wrapped into object instances. Some examples:
+
+<p><div class="Hcode">
+// declaring a number of integral type<BR>
+// yields a default value of 0 (or false)<BR>
+int x;
+</div><div class="Result">
+0 : java.lang.Integer
+</div><div class="Hcode">
+<BR>
+// declaring a number of a reference type<BR>
+// yields the null reference as default value<BR>
+Double y;
+</div><div class="Result">
+null
+</div><div class="Hcode">
+<BR>
+// numeric promotion on java.lang.Double<BR>
+// and java.lang.Integer<BR>
+(y = 3) * ++x / 2;
+</div><div class="Result">
+1.5 : java.lang.Double
+</div><div class="Hcode">
+<BR>
+// all literals are objects<BR>
+false.equals(new Boolean("false"))<BR>
+</div><div class="Result">
+true : java.lang.Boolean
+</div>
+
+
+<p><a name="c_2.2"></a><H2>2.2 Equality comparisons</H2>
+Because all values are objects, the equality comparison operator <code>==</code> and inequality comparison operator <code>!=</code> use <code>.equals()</code> on the operand values to compare for equality (after a suitable binary numeric promotion, if necessary). Note that the <code>==</code> and <code>!=</code> recurse through arrays:
+
+<p><div class="Hcode">
+// .equals() comparison on arrays<BR>
+{0, "abc", false} == {null, "abc", false}
+</div><div class="Result">
+false : java.lang.Boolean
+</div><div class="Hcode">
+{0, "abc", false} == {0.0, "abc", false}
+</div><div class="Result">
+true : java.lang.Boolean
+</div>
+
+<p>
+To test for instance equality, use the strict comparison operators <code>===</code> and <code>!==</code> instead:
+
+<p><div class="Hcode">
+// numeric literals produce different object instances<BR>
+3 === 3;
+</div><div class="Result">
+false : java.lang.Boolean
+</div><div class="Hcode">
+<BR>
+// the boolean literals produce a fixed value<BR>
+false === Boolean.FALSE &amp;&amp; true === Boolean.TRUE;<BR>
+</div><div class="Result">
+true : java.lang.Boolean
+</div>
+
+
+<p><a name="c_2.3"></a><H2>2.3 Types</H2>
+In contrast to the Java programming language, Hojo does not always require that the type of every expression to be statically determined. This has two reasons: firstly, it reduces the size of the necessary input, because type conversions are performed automatically, if possible. Secondly, this may be necessary because of the way Hojo interfaces with Java: the type of any value in Hojo may be represented by an instance of <code>java.lang.Class</code>, because this is the type information given by Java. The arity, argument and return types of a Hojo function may therefore not be statically decidable, which makes it necessary to perform automatic type conversions. However, no statically defined type information is discarded by the compiler, which uses this information to generate more efficient code if possible (for example, the lookup of a method/constructor is delayed until the code is interpreted, if the available static type information is not sufficient to find the method or constructor). Additionally, the compiler can issue a warning or error if the code does not pass a static type check, such that code in Hojo language can be as almost as strictly typed as Java code:
+
+<p><div class="Hcode">
+// automatical type conversion</BR>
+// (with appropriate type strictness / warning level)<BR>
+l = new int[3];
+</div><div class="Warning">
+&nbsp;&nbsp;&nbsp;&nbsp;H6008: Assignment of type int[] to type java.util.ArrayList requires a runtime conversion
+</div><div class="Result">
+[0,0,0] : java.util.ArrayList
+</div><div class="Hcode">
+<BR>
+// runtime method lookup<BR>
+// (with appropriate type strictness / warning level)<BR>
+Object x = 3;
+</div><div class="Result">
+3 : java.lang.Integer;
+</div><div class="Hcode">
+x.intValue();
+</div><div class="Warning">
+&nbsp;&nbsp;&nbsp;&nbsp;H6003: Method java.lang.Object.intValue() could not be found
+</div><div class="Result">
+3 : java.lang.Integer
+</div>
+
+<p>The <code>var</code> keyword can be used as type specification in a variable declaration, which is then known as a <i>lazy variable declaration</i>. The type of a variable declared in a lazy variable declaration will be equal to the type of the initializer expression, using the type <code>Object</code> if no initializer is used. 
+<p><div class="Hcode">
+// equivalent to the Java code<BR>
+// java.util.TreeSet s = new java.util.TreeSet();<BR>
+// java.util.Iterator i = s.iterator();<BR>
+var s = new java.util.TreeSet(), i = s.iterator();
+</div>
+
+<p>In Hojo, the
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/expressions.doc.html#251530"><code>.class</code></a>
+idiom is a permissible suffix to any expression. Such an expression evaluates to the Java class representation of the static type of that expression:
+
+<p><div class="Hcode">
+// the declared type of variable s:<BR>
+s.class;
+</div><div class="Result">
+class java.util.TreeSet : java.lang.Class
+</div><div class="Hcode">
+// the static type of an if-then-else expression is the<BR>
+// maximal type of the two alternative types<BR>
+(true ? 2 : 2.0).class;
+</div><div class="Result">
+class java.lang.Double : java.lang.Class
+</div>
+
+<p>The built-in type identifiers of the Hojo language are<BR>
+<code>Object</code>,  <code>Function</code>,  <code>void</code>, <code>Map</code>,  <code>Array</code>,  <code>List</code>,  <code>Set</code>,  <code>Collection</code>,  <code>Iterator</code>, <code>boolean</code>,  <code>Boolean</code>,  <code>char</code>,  <code>Character</code>,  <code>String</code>,  <code>StringBuffer</code>,  <code>Pattern</code>,  <code>Class</code>,  <code>Date</code>,  <code>File</code>,  <code>URL</code>, <code>Number</code>,  <code>byte</code>,  <code>Byte</code>,  <code>short</code>,  <code>Short</code>,  <code>int</code>,  <code>Integer</code>,  <code>long</code>,  <code>Long</code>,  <code>float</code>,  <code>Float</code>,  <code>double</code>,  <code>Double</code>, <code>BigInteger</code> and <code>BigDecimal</code>
+
+
+<p><a name="c_2.4"></a><H2>2.4 Class names</H2>
+For reasons of efficiency, the Hojo compiler relies on so-called <i>package prefixes</i> in order to determine whether an identifier is the beginning of a
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/names.doc.html#21811">qualified type name</a>
+: If an identifier is a package prefix, then this is treated as the name of a package, regardless of the existence of such a package. Furthermore, a qualified class name must be followed by a blank character or a separator token different from the <code>.</code> character, in order to determine whether the following identifier is part of the class name.
+<BR>Thus
+
+<p><div class="Hcode">
+java.lang.Math.PI;
+</div><div class="Error">
+&nbsp;&nbsp;&nbsp;&nbsp;H3005: Unknown class name java.lang.Math.PI
+</div><div class="Hcode">
+java.lang.Math .PI;
+</div><div class="Result">
+3.141592653589793 : java.lang.Double
+</div>
+
+<p>The default package prefixes are <code>java</code>, <code>javax</code>, <code>sun</code>, <code>com</code>, <code>org</code> and <code>net</code>. These may be configured dynamically the <a href="#c_4">meta language</a>.
+
+<p><a name="c_2.5"></a><H2>2.5 String literals</H2>
+Hojo supports the full syntax of String and character literals in Java, with the
+following extensions:
+
+<p><ul>
+<li>The escape sequence <code>\a</code> denotes the character <code>\u0007</code> (alert, bell).
+<li>The escape sequence <code>\v</code> denotes the character <code>\u000B</code> (vertical tab).
+<li>It is legal to let a string literal span multiple lines by preceding the first linebreak as well as the next character of the string with the escape character, <code>\</code>. Thus
+<div class="Hcode">
+"this string literal \<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;\spans multiple\<BR>
+\ lines";
+</div><div class="Result">
+"this string literal spans multiple lines" : java.lang.String
+</div>
+<li>The backquote, which is denoted the <i>raw string quote</i> character, may be used to produce raw string literals, that is, string literals in which the escape character does not have a special significance (other than when used as a prefix to the raw quote character itself, in which case the literal is not terminated). Furthermore, non-printing characters are permitted, and these will be placed directly in the literal string, with the only exception that both substrings <code>"\n"</code> and <code>"\r\n"</code> will generate the substring <code>"\n"</code>. Thus
+<div class="Hcode">
+`this is a<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;\`\raw\\`<BR>
+string quote`;
+</div><div class="Result">
+"this is a\n\t`\\raw\\`\nstring quote" : java.lang.String
+</div>
+</ul>
+
+
+<p><a name="c_2.6"></a><H2>2.6 Exceptions</H2>
+In Hojo, all exceptions are unchecked, but the <code>try</code> statement is implemented
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#79311">'as usual'</a>
+to allow exceptions to be handled when necessary. Unhandled exceptions, ie. exceptions which are thrown from a top-level statement in Hojo code, will automatically be handled by the interpreter in the same way as a syntax error.
+<BR>Finally, the interpretation of an iterated statement (
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#24588"><code>for</code></a>,
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#237277"><code>while</code></a> or
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#6045"><code>do</code></a>
+) may cause an <code>InterruptedException</code> to be thrown if the interpreter thread is interrupted while the iterated statement is interpreted. This allows the interpreter to be stopped quickly and cleanly, if something has gone wrong (in case of an infinite recursion, the code will most likely stop because of a <code>StackOverflowError</code>).
+
+
+<p><a name="c_2.7"></a><H2>2.7 The <code>switch</code> statement</H2>
+Because every value in Hojo is represented as an object instance, the semantics of the
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#35518"><code>switch</code> statement</a>
+have been redefined: any expression is allowed in a <code>case</code>, and each case is matched using a Hojo <code>==</code> operation. Because the compiler does not check for 
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/defAssign.doc.html#25980">definite assignment</a>
+of variables, no local variable declarations are allowed inside the <code>switch</code> statement.
+
+
+<p><a name="c_2.8"></a><H2>2.8 Functions without return value</H2>
+In Hojo, a function whose static return type is <code>void</code> evaluates to itself when applied to its arguments; similarly, methods having return type <code>void</code> will evaluate to the object instance on which they are invoked (or to <a href="#d_()"><code>()</code></a>, in case of a static method invocation). Because of this, it is possible to use compact, repeated method invocations or function applications such as
+
+<p><div class="Hcode">
+System.out.println("line 1").println("line 2").println("line 3");
+</div><div class="Output">
+line 1<BR>
+line 2<BR>
+line 3<BR>
+</div><div class="Result">
+java.io.PrintStream@1b7c76 : java.io.PrintStream
+</div>
+
+
+<p><a name="c_2.9"></a><H2>2.9 Scope of variables</H2>
+Being a higher-order functional language, Hojo organizes variables quite differently from the way these are organized in the Java language. The general rule is that <i>any block of statements constitutes a new scope</i>. The only exceptions to this rule are the <code><a href="#c_2.7">switch</a></code> statement, which does not create a new scope, and the body of a <a href="#c_3.2.2">lambda expression</a>, which does create a new scope.
+<BR>In Hojo, the keywords <code>this</code> and <code>super</code> are used to refer to a lexical scope: <code>this</code> is the current scope, and <code>super</code> is the enclosing scope. This allows explicit references to any variable, even if it has been hidden by another variable of the same name in another scope:
+
+<p><div class="Hcode">
+int x = 0;<BR>
+let {<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;int x = 8;<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;super.x = 5;<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;return this.x;<BR>
+};<BR>
+</div><div class="Result">
+8 : java.lang.Integer
+</div><div class="Hcode">
+x;
+</div><div class="Result">
+5 : java.lang.Integer
+</div>
+
+<p>In the top-level scope, <code>this</code> is a valid expression, which evaluates to a map view of the global variables.
+	
+
+<p><a name="c_2.10"></a><H2>2.10 Array creation expressions</H2>
+The syntax of 
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/expressions.doc.html#46168">array creation expressions</a>
+without an array initializer is slightly modified in Hojo: The name of the element type (which may be an array type) is given first, then then a sequence of array dimensions enclosed in brackets follows. Thus
+
+<p><div class="Hcode">
+// create an array of three elements of type int[][]<BR>
+new int[][][3];
+</div><div class="Result">
+{null, null, null} : int[][][]
+</div><div class="Hcode">
+// this is not legal Hojo!<BR>
+new int[2][];
+</div><div class="Error">
+&nbsp;&nbsp;&nbsp;&nbsp;H3020: Syntax error
+</div>
+
+
+<p><a name="c_2.11"></a><H2>2.11 Omissions from the core language</H2>
+In addition to the differences described in the preceding sections, the core Hojo language differs from the expression and statement syntax of the Java programming language in the following ways:
+<ul>
+<li><a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#247766">Local class declarations</a> are not part of the core language. See <a href="#c_3.9">here</a> for a description of class declarations in Hojo.
+<li><a href="http://java.sun.com/docs/books/jls/second_edition/html/expressions.doc.html#252986">Anonymous class declarations</a> are not allowed.
+<li>The <code>.new</code> syntax of <a href="http://java.sun.com/docs/books/jls/second_edition/html/expressions.doc.html#41147">class instance creation expressions</a> cannot be used. Instead, the enclosing instance must be provided as the first element of the constructor argument list.
+<li><a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#78993">Labeled statements</a> are not allowed.
+<li><a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#246838">Blocks</a> may only be used as part of a statement. See <a href="#c_3.4">here</a> for further details.
+<li><a href="http://java.sun.com/docs/books/jls/second_edition/html/lexical.doc.html#48282">Octal integer literals</a> are not supported; these will be treated as decimal integer literals.
+<li>No <a href="http://java.sun.com/docs/books/jls/second_edition/html/expressions.doc.html#24924">unary plus operator</a> exists.
+</ul>
+
+
+<HR align="center" width="75%">
+<a name="c_3"></a><H1>3 Extended language</H1>
+<p>The <i>extended language</i> provides a wide range of features, which are not found in the Java programming language. These extensions provide much of the expressional power of the Hojo language, while also providing a rudimentary support for class declarations.
+<BR>The term <i>primary language</i> is used to denote the union of the core language and the extended language.
+
+<p><a name="c_3.1"></a><H2>3.1 Numbers</H2>
+The Hojo language contains the numeric types <code>Number</code>, <code>byte</code>, <code>Byte</code>, <code>short</code>, <code>Short</code>, <code>int</code>, <code>Integer</code>, <code>long</code>, <code>Long</code>, <code>float</code>, <code>Float</code>, <code>double</code>, <code>Double</code>, <code>BigInteger</code> and <code>BigDecimal</code>. All numeric operations are defined for these classes, using a slightly extended
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/conversions.doc.html#170983">binary numeric promotion</a>:
+<code>BigDecimal</code> takes precedence over <code>BigInteger</code>, which takes precedence over <code>Double</code>. Thus, the general rule is unchanged: order of magnitude is preserved by a numeric promotion, while precision may be lost.
+<BR>Note that Hojo uses a proprietary <i>unary integral conversion</i> for the operands of a bitwise operator. The conversion truncates a <code>BigDecimal</code> to a <code>BigInteger</code>, while the <code>Double</code> and <code>Float</code> are 'converted' to an integral number by treating the bit pattern as a <code>Long</code> or <code>Integer</code> rather than a <code>Double</code> or <code>Float</code>.
+<BR>Every numeric type (except the default type <code>Integer</code>) has a <i>suffix character</i>, which may be used to specify a specific type representation of a decimal numeric literal. The suffix characters are
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Suffix character<BR>(case insensitive)</b><TD><b>Corresponding type</b>
+<TR><TD><code>b</code><TD><code>Byte (byte)</code>
+<TR><TD><code>s</code><TD><code>Short (short)</code>
+<TR><TD><code>l</code><TD><code>Long (long)</code>
+<TR><TD><code>f</code><TD><code>Float (float)</code>
+<TR><TD><code>d</code><TD><code>Double (double)</code>
+<TR><TD><code>i</code><TD><code>BigInteger</code>
+<TR><TD><code>r</code><TD><code>BigDecimal</code>
+</TABLE></div>
+
+<p>The general rule to determine the type of a numeric literal is:
+
+<ul>
+<li>If a suffix character is specified, then the corresponding type will be used, and the given value is converted to that type at compile time, if necessary.
+<li>Otherwise, if a suffix character can be inferred from the context (e.g. from a directly preceding type cast), and no suffix character is explicitly defined, then then this inferred suffix character will be used. 
+<li>Otherwise, the type will be 'best fit' of the <code>Integer</code>, <code>Long</code> or <code>Double</code> types, or by the <code>Double</code> type if a decimal point is used. Thus arbitrary-precision numbers can only be specified using an explicit suffix character.
+</ul>
+
+<p>Hexadecimal numeric literals may not use a suffix character, but may infer a representation type from the context. Otherwise, the type of the literal will be defined by
+
+<ul>
+<li>If the literal contains less than 9 digits (including leading zeroes), the value is an <code>Integer</code>.
+<li>Otherwise, if the literal contains less than 17 digits (including leading zeroes), the value is a <code>Long</code>.
+<li>Otherwise, the value is a <code>BigInteger</code>.
+</ul>
+
+<p>Some examples:
+
+<div class="Hcode">
+// no explicit or implicit suffix,<BR>
+// value can be represented by an Integer<BR>
+1e3;
+</div><div class="Result">
+1000 : java.lang.Integer
+</div><div class="Hcode">
+<BR>
+// explicit suffix<BR>
+2.718i;
+</div><div class="Result">
+2 : java.math.BigInteger
+</div><div class="Hcode">
+<BR>
+// implicit 'b' suffix<BR>
+new byte[] { -8, 317 };
+</div><div class="Result">
+{-8,61} : java.lang.byte[]
+</div><div class="Hcode">
+<BR>
+// implicit conversion to float. Note that hexadecimal<BR>
+// numeric literals are converted to Float or Double<BR>
+// using an inverse unary integral conversion:<BR>
+(float)0x40490fdb;
+</div><div class="Result">
+3.1415927 : java.lang.Float
+</div><div class="Hcode">
+<BR>
+// long value<BR>
+0x000000001;
+</div><div class="Result">
+1 : java.lang.Long
+</div>
+
+
+<p><a name="c_3.2"></a><H2>3.2 Functions</H2>
+In the Hojo language, functions are treated no differently from other values, except that a value typed as a <code>Function</code> may be applied to a list of argument values.
+A function in Hojo may be created in a number of ways, as the following sections will show.
+
+<p><a name="c_3.2.1"></a><H3>3.2.1 Function declarations</H3>
+The declaration of a function - which syntactially resembles a 
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/classes.doc.html#40420">method declaration</a>
+in Java - is basically treated as a local variable declaration and may be used anywhere a normal variable declaration is allowed (except in the initializer of a <code>for</code> statement). Function declarations may be repeated, such that the variable may be assigned a new function (the signature of the functions must match, though). Mutually recursive functions may be created by omitting the function body (this is known as a <i>forward declaration</i>), and by redefining the function at a later time. The first declaration of a function automatically creates a forward declaration, such that self-recursive functions may be defined without explicitly using a forward declaration. 
+<BR>Some examples:
+
+</div><div class="Hcode">
+<pre>
+// forward declaration of function f
+double f(double x, int y);
+
+// define function g (using function f)
+double g(double x, int y) {
+    switch (y) {
+        case 0: return 1;
+        case 1: return x;
+        default: return y &lt; 0 ? f(x, y) : g(x * x, y - 1);
+    }
+}
+
+// redefine f (using g)
+double f(double x, int y) {
+    switch (y) {
+        case 0: return 1;
+        case -1: return 1/x;
+        default: return y &gt; 0 ? g(x, y) : f(1 / x, y + 1);
+    }
+}
+
+// nested function declarations are allowed
+Function f(int x) {
+    int f(y) {
+        return ++x + y;
+    }
+    return f;
+}
+</pre>
+var x = f(5);
+</div><div class="Result">
+fn(java.lang.Object y) =&gt; int
+</div><div class="Hcode">
+x(2);
+</div><div class="Result">
+8 : java.lang.Integer
+</div><div class="Hcode">
+x(1);
+</div><div class="Result">
+8 : java.lang.Integer
+</div>
+
+
+<p><a name="c_3.2.2"></a><H3>3.2.2 Lambda expressions</H3>
+A function may be created by a <i>lambda expression</i>, which is defined syntactically as
+<p><code>fn&nbsp;(&nbsp;<i>arguments</i>&nbsp;)&nbsp;=&gt;&nbsp;<i>expression</i></code>.
+<p>This resulting function is equivalent to the function created by a function declaration having the same argument list <code><i>arguments</i></code>, the body 
+<pre>
+{
+    return <i>expression</i>;
+}
+</pre>
+and a declared return type equal to <code><i>expression</i>.class</code>.
+<p><a name = "d_()"></a>The special expression <code>()</code> (defined by the invariant <code>()&nbsp;==&nbsp;null&nbsp;&amp;&amp;&nbsp;().class&nbsp;==&nbsp;void.class</code>), can be used to create a <code>void</code> function in a lambda expression. For example:
+
+<p></div><div class="Hcode">
+(fn(x)=&gt;System.out.println(x) then ())("line 1")("line 2")("line 3");
+</div><div class="Output">
+line 1<BR>
+line 2<BR>
+line 3
+</div><div class="Result">
+fn(java.lang.Object x) =&gt; void
+</div>
+
+
+<p><a name="c_3.2.3"></a><H3>3.2.3 Parameter usage</H3>
+In addition to the ordinary parameter declarations known from Java, there are a number of additional ways to declare function parameters, each of which is described below.
+
+<p>It is allowed to omit the type declaration, in which case the <code>Object</code> type is chosen automatically:
+<p><div class="Hcode">
+fn(x)=>x;
+</div><div class="Result">
+fn(java.lang.Object x) => java.lang.Object
+</div>
+
+<p>A <i>default parameter value</i> may be supplied in the declaration. The default value, <i>which is evaluated at the time of the compilation</i> (making it illegal to refer to variables), is then substituted for an omitted argument value:
+<p><div class="Hcode">
+var f = fn(x = false) => x;
+</div><div class="Result">
+fn(java.lang.Object x = false) => java.lang.Object
+</div><div class="Hcode">
+// delimiters may be used as placeholders for omitted values<BR>
+f(,);
+</div><div class="Result">
+false : java.lang.Boolean
+</div><div class="Hcode">
+// the parameter list may be shortened<BR>
+f();
+</div><div class="Result">
+false : java.lang.Boolean
+</div>
+
+<p>The type of a parameter may be inferred from the type of the default paramter value declaration, by supplying the <code>var</code> keyword as a type description:
+<p><div class="Hcode">
+fn(var x = 1.5, var y = null) => x + y;
+</div><div class="Result">
+fn(java.lang.Double x = 1.5d, java.lang.Object y) => java.lang.Double
+</div>
+
+<p>It is legal to omit any parameter, regardless of the existence of a default parameter value declaration. If undeclared, the default parameter value will be produced in the same manner as the default value of a variable:
+<p><div class="Hcode">
+(fn(x, boolean y, int z, w) => x + y + z + w)([]);
+</div><div class="Result">
+[false, 0, null] : java.util.ArrayList
+</div>
+
+<p>The last parameter in the declaration may be an <i>excess parameter</i>, that is, an artificial <code>final</code> parameter of type <code>Object[]</code> whose contents will be the excess arguments of the supplied argument list. An excess parameter is declared using the symbol <code>*</code> as type description:
+<p><div class="Hcode">
+var f = fn(*args)=>args;
+</div><div class="Result">
+fn(* args) => java.lang.Object[]
+</div><div class="Hcode">
+f();
+</div><div class="Result">
+{} : java.lang.Object[]
+</div><div class="Hcode">
+f(1,2,3);
+</div><div class="Result">
+{1, 2, 3} : java.lang.Object[]
+</div>
+
+<p><a name="c_3.2.4"></a><H3>3.2.4 Class member access functions</H3>
+The function creation operator <code>=&gt;</code> - which is used in lambda expressions - may also be used as a special operator to create functions which access the <code>public</code> fields or methods of a class.
+<BR>The operator must be placed between a type name (denoted the <i>base class</i>) and an identifier (denoted the <i>name</i>). If the name is followed by a left parenthesis, then the enclosed code, which must be a sequence of type names separated by the delimiter character <code>,</code>, is known as the <i>argument type description</i>, and its length is denoted <i>n</i>. The function resulting from the 'operation', denoted <code><i>result</i></code>, is defined by
+
+<ul>
+<li>If an argument type description is given, then the method <i>m</i> of the base class having the the given <code><i>name</i></code> and <code><i>argument type description</code></i> is located. Then the <code><i>result</i></code>, is defined by:
+	<ul>
+	<li>If <i>m</i> does not exist, then this will cause a compiler syntax error.
+	<li>Otherwise, if <i>m</i> is declared <code>static</code>, then <code><i>result</i></code> is a function of the same signature as <i>m</i>, which, when applied to its arguments, invokes the static method <i>m</i> on these arguments.
+ 	<li>Otherwise, <code><i>result</i></code> will be a function of arity <i>n</i> + 1, whose first argument type is the same as the <i>base class</i>, while the remaining argument types match the argument types of <i>m</i>. When applied to its arguments, <code><i>result</i></code> invokes the instance method <i>m</i> on the object provided as the first argument to <code><i>result</i></code>, providing it the following <i>n</i> arguments.
+	</ul>
+<li>Otherwise, then the field <i>f</i> of the <i>base class</i> having the the given <i>name</i> is  located. Then the <code><i>result</i></code> is defined by:
+	<ul>
+	<li>If <i>f</i> does not exist, then this will cause a compiler syntax error.
+	<li>Otherwise, if <i>f</i> is declared <code>static</code>, then <code><i>result</i></code> is a function of arity 0, which retreives and returns the value of <code><i>f</i></code> when applied to the empty argument list.
+ 	<li>Otherwise, the <code><i>result</i></code> is an unary function, which, when applied to an argument being an instance of the <i>base class</i>, retreives and returns the value of the field <i>f</i> in the said object instance.
+ 	</ul>
+</ul>
+
+Note that if the <i>base class</i> is an array class, then it will treated as <code>Object.class</code>.
+The rationale for this is that Java does not reflect the fields (<code>.length</code>) or 
+methods (the methods of <code>Object.class</code> in addition to <code>clone()</code> as a <code>public</code> method) of an array class.
+Some examples:
+
+<p><div class="Hcode">
+// static field access function<BR>
+Math=&gt;PI;
+</div><div class="Result">
+fn() =&gt; double
+</div><div class="Hcode">
+<BR>
+// static method function<BR>
+Math=&gt;log(double);
+</div><div class="Result">
+fn(double) =&gt; double
+</div><div class="Hcode">
+<BR>
+// instance method function<BR>
+String=&gt;replace(char, char);
+</div><div class="Result">
+fn(java.lang.String, char, char) =&gt; java.lang.String
+</div>
+
+
+<p><a name="c_3.2.5"></a><H3>3.2.5 Special functions</H3>
+A number of special functions may be created using the <code>op</code> keyword as prefix. For example, the <a href="#d_pure">pure</a> operators of Hojo are represented by a function, which can be obtained by prefixing the <code>op</code> keyword to the operator syntax. Note that <code>op-</code> by convention yields the binary subtraction operator rather than the unary negation operator. 
+<BR>Below is shown examples of the possible special functions:
+
+<p><div class="Hcode">
+// using the * operator as a function<BR>
+foldl(op *, 1, 1..10);
+</div><div class="Result">
+3628800 : java.lang.Integer
+</div><div class="Hcode">
+<BR>
+// type cast function<BR>
+op(String);
+</div><div class="Result">
+fn(java.lang.Object) =&gt; java.lang.String
+</div><div class="Hcode">
+<BR>
+// void function (identity function)<BR>
+op();
+</div><div class="Result">
+fn(java.lang.Object) =&gt; java.lang.Object
+</div><div class="Hcode">
+<BR>
+// index function ((object, index) =&gt; element)<BR>
+op[];
+</div><div class="Result">
+fn(java.lang.Object, int) =&gt; java.lang.Object
+</div><div class="Hcode">
+<BR>
+// constructor function for array class<BR>
+// ((array dimensions) =&gt; new array)<BR>
+op{int[][]};
+</div><div class="Result">
+fn(int, int) =&gt; int[][]
+</div><div class="Hcode">
+<BR>
+// constructor function for ordinary class<BR>
+op{BigInteger(int, byte[])};
+</div><div class="Result">
+fn(int, byte[]) =&gt; java.math.BigInteger
+</div>
+
+
+<p><a name="c_3.3"></a><H2>3.3 Collections and maps</H2>
+Collections and maps can be created easily through collection or map instance creation expressions:
+
+<p><div class="Hcode">
+// collection instance creation expression<BR>
+var l = [1, 2, 3];
+</div><div class="Result">
+[1,2,3] : java.util.ArrayList
+</div><div class="Hcode">
+<BR>
+// empty places are allowed<BR>
+[,,];
+</div><div class="Result">
+[null,null,null] : java.util.ArrayList
+</div><div class="Hcode">
+<BR>
+// extended collection instance creation expression<BR>
+var l2 = new java.util.Vector(l) [4, 5, 6];
+</div><div class="Result">
+[1,2,3,4,5,6] : java.util.Vector
+</div><div class="Hcode">
+<BR>
+// map instance creation expression.<BR>
+var m = [. x = 45, y = "y", z = null .];
+</div><div class="Result">
+[.<BR>
+&nbsp;&nbsp;x = 45 : java.lang.Integer<BR>
+&nbsp;&nbsp;z = null<BR>
+&nbsp;&nbsp;y = "y" : java.lang.String<BR>
+.] : java.util.HashMap
+</div><div class="Hcode">
+<BR>
+// extended map instance creation expression:<BR>
+var m2 = new java.util.TreeMap(m) [. w = 32, x = 38 .];
+</div><div class="Result">
+[.<BR>
+&nbsp;&nbsp;w = 32 : java.lang.Integer<BR>
+&nbsp;&nbsp;x = 38 : java.lang.Integer<BR>
+&nbsp;&nbsp;y = "y" : java.lang.String<BR>
+&nbsp;&nbsp;z = null<BR>
+.] : java.util.TreeMap
+</pre>
+</div>
+
+<p>Hojo contains the built-in types <code>Collection</code>, <code>List</code>, <code>Set</code> and <code>Map</code>, which may be used in type conversions (yielding values of types <code>java.util.ArrayList</code>, <code>java.util.ArrayList</code>, <code>java.util.HashSet</code> and <code>java.util.HashMap</code>, respectively, if a new value is created). Furthermore, some operations like sum and difference have been overloaded to be defined for these types. Generally, such operations modify and return the left-hand operand:
+
+<p><div class="Hcode">
+// collection addition (using .add() or .addAll())<BR>
+l + [4, 5, 6]; 
+</div><div class="Result">
+[1,2,3,4,5,6] : java.util.ArrayList
+</div><div class="Hcode">
+l + 7
+</div><div class="Result">
+[1,2,3,4,5,6,7] : java.util.ArrayList
+</div><div class="Hcode">
+<BR>
+// collection difference (using .remove() or .removeAll())<BR>
+l2 - [3, 4, 5];
+</div><div class="Result">
+[1,2,6] : java.util.Vector
+</div><div class="Hcode">
+l2 - 6;
+</div><div class="Result">
+[1,2] : java.util.Vector
+</div><div class="Hcode">
+<BR>
+// map addition (using .putAll())<BR>
+m2 + [. y = 3, v = 9 .];
+</div><div class="Result">
+[.<BR>
+&nbsp;&nbsp;v = 9 : java.lang.Integer<BR>
+&nbsp;&nbsp;w = 32 : java.lang.Integer<BR>
+&nbsp;&nbsp;x = 38 : java.lang.Integer<BR>
+&nbsp;&nbsp;y = 3 : java.lang.Integer<BR>
+&nbsp;&nbsp;z = null<BR>
+.] : java.util.TreeMap
+</div>
+
+<p>The <code>.</code> notation may be used to create <i>map member access expressions</i>:
+<p><div class="Hcode">
+// equivalent to m2.get("x");<BR>
+m2.x;
+</div><div class="Result">
+38 : java.lang.Integer
+</div><div class="Hcode">
+// equivalent to<BR>
+// let {<BR>
+// &nbsp;&nbsp;&nbsp;&nbsp;var n = (Number)m2.get("t");<BR>
+// &nbsp;&nbsp;&nbsp;&nbsp;m2.put("t", n + 1);<BR>
+// &nbsp;&nbsp;&nbsp;&nbsp;return n == null ? 0 : n;<BR>
+// };<BR>
+m2.t++;
+</div><div class="Result">
+0 : java.lang.Integer;
+</div>
+
+<p>Note that only members whose keys are <code>String</code> instances can be accessed in this way, and that new members are placed in the map when necessary. The syntax is thus similar to that of a field access expression, wherefore field access expressions cannot be used on <code>Map</code> instances: Assuming that the variable <code>foo</code> is an instance of a class which has the public field <code>bar</code>, then <code>foo.bar</code> will evaluate to <code>foo.get("bar")</code>. Thus the field <code>bar</code> can only be read by<BR>
+<span class="Hcode">(foo.class=>bar)();</span><BR>
+or<BR>
+<span class="Hcode">foo.class.getField("bar").get(foo);</span><BR>
+and set by<BR>
+<span class="Hcode">foo.class.getField("bar").set(foo, &#8230;);</span>.<BR>
+Of course, the <code>.class</code> notation prevents map member access expressions from using the key value <code>"class"</code>.
+
+
+<p><a name="c_3.4"></a><H2>3.4 Tuples</H2>
+The Hojo language does not contain a special tuple type, but generally treats arrays of objects as such. The array creation syntax has been extended, 
+such that a left brace signifies the beginning of a new array in all contexts, except 
+when it directly follows the keyword of a statement. For this reason, a 
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#246838">block</a>
+is not legal in Hojo.
+<BR>Some examples:
+
+<p><div class="Hcode">
+var l = {1,2, ,4, {1,3}};
+</div><div class="Result">
+{1,2,null,4,{1,3}} : java.lang.Object[]
+</div>
+
+<p>There is no special syntax to support application of functions to a tuple of argument values. However, the method <code>.invoke()</code>, which is implemented by any function, may be used to pass a tuple as an argument list:
+
+<p><div class="Hcode">
+op*.invoke({2.3, 8});
+</div><div class="Result">
+18.4 : java.lang.Double
+</div>
+
+<p>Finally, the multiplication operator yields the Cartesian product when the argument values are tuples:
+
+<p><div class="Hcode">
+{"x", "y"} * {1,2,3,4}
+</div><div class="Result">
+{{"x",1},{"x",2},{"x",3},{"x",4},{"y",1},{"y",2},{"y",3},{"y",4}} : java.lang.Object[][]
+</div>
+
+
+<p><a name="c_3.5"></a><H2>3.5 Index expressions and slices</H2>
+In addition to ordinary 
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/expressions.doc.html#239587">array access expressions</a>
+, Hojo supports indexing of <code>String</code>s, <code>StringBuffer</code>s and <code>List</code>s:
+
+<p><div class="Hcode">
+"chars"[0];
+</div><div class="Result">
+'c' : java.lang.Character;
+</div><div class="Hcode">
+<BR>
+var buf = new StringBuffer("123");
+</div><div class="Result">
+123 : java.lang.StringBuffer
+</div><div class="Hcode">
+buf[1]++ then buf;
+</div><div class="Result">
+133 : java.lang.StringBuffer
+</div><div class="Hcode">
+<BR>
+[1,2][0];
+</div><div class="Result">
+1 : java.lang.Integer
+</div>
+
+<p>In addition to this, a so-called <i>slice</i> may be created by an index of two elements: the result is a value of type <code>List</code>, whose elements range from the first of the indices (inclusive) to the last index (exclusive). If the second index is omitted, or evaluates to a value less than the first, then the last element in the slice will be the last element in the base object:
+
+<p><div class="Hcode">
+{1,2,3,4}[1,3];
+</div><div class="Result">
+[2,3]
+</div><div class="Hcode">
+<BR>
+"longSlice"[4, ];
+</div><div class="Result">
+"Slice"
+</div>
+
+
+<p><a name="c_3.6"></a><H2>3.6 Operator hierarchy</H2>
+An overview of the operator hierarchy of the Hojo language is found below. The operators marked as "core" correspond to the operators of the core language, and thus duplicate the operators of the Java language (many of these have been overloaded, though), while the remaining operators are defined in the extended language and thus do not correspond to operators in Java.<BR>
+The operator priorities 15, 14 and 3 are used exclusively for postfix, prefix and ternary infix operators, respectively. Note that a ternary operator may be used as a binary operator, in which case the third operand will default to <code>null</code>. Thus e.g. <code>1..10</code> and <code>1..10..null</code> are equivalent.<BR>
+<a name="d_pure"></a>
+The so-called <i>pure</i> operators are the operators which have been defined in terms of a <code>Function</code> instance. In contrast to these, the <i>impure</i> operators have special semantics which prevent the operation from being defined as an ordinary function.
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Syntax</b><TD><b>Priority</b><TD><b>Arity</b><TD><b>Assoc.</b><TD><b>Core</b><TD><b>Pure</b>
+
+<TR><TD><code>.</code> <TD>15 <TD>2 <TD>left <TD>+ <TD>(+)
+<TR><TD><code>=&gt;</code> <TD>15 <TD>2 <TD>left <TD>- <TD>-
+<TR><TD><code>++</code> <TD>15 / 14 <TD>1 <TD>none <TD>+ <TD>-
+<TR><TD><code>--</code> <TD>15 / 14 <TD>1 <TD>none <TD>+ <TD>-
+<TR><TD><code>-</code> <TD>14 <TD>1 <TD>right <TD>+ <TD>+
+<TR><TD><code>~</code> <TD>14 <TD>1 <TD>right <TD>+ <TD>+
+<TR><TD><code>!</code> <TD>14 <TD>1 <TD>right <TD>+ <TD>+
+<TR><TD><code>+-</code> <TD>14 <TD>1 <TD>right <TD>- <TD>+
+<TR><TD><code>@</code> <TD>14 <TD>1 <TD>right <TD>- <TD>+
+<TR><TD><code>**</code> <TD>13 <TD>2 <TD>right <TD>- <TD>+
+<TR><TD><code>*</code> <TD>12 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>/</code> <TD>12 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>%</code> <TD>12 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>+</code> <TD>11 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>-</code> <TD>11 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>/\</code> <TD>11 <TD>2 <TD>left <TD>- <TD>+
+<TR><TD><code>&lt;&lt;</code> <TD>10 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>&gt;&gt;</code> <TD>10 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>&gt;&gt;&gt;</code> <TD>10 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>&lt;</code> <TD>9 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>&lt;=</code> <TD>9 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>&gt;=</code> <TD>9 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>&gt;</code> <TD>9 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>&lt;?</code> <TD>9 <TD>2 <TD>left <TD>- <TD>+
+<TR><TD><code>&gt;?</code> <TD>9 <TD>2 <TD>left <TD>- <TD>+
+<TR><TD><code>in</code> <TD>9 <TD>2 <TD>left <TD>- <TD>+
+<TR><TD><code>partof</code> <TD>9 <TD>2 <TD>left <TD>- <TD>+
+<TR><TD><code>==</code> <TD>8 <TD>2 <TD>left <TD>(+) <TD>+
+<TR><TD><code>!=</code> <TD>8 <TD>2 <TD>left <TD>(+) <TD>+
+<TR><TD><code>instanceof</code> <TD>8 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>===</code> <TD>8 <TD>2 <TD>left <TD>(-) <TD>+
+<TR><TD><code>!==</code> <TD>8 <TD>2 <TD>left <TD>(-) <TD>+
+<TR><TD><code>::</code> <TD>7 <TD>2 <TD>right <TD>- <TD>+
+<TR><TD><code>&lt;&gt;</code> <TD>7 <TD>2 <TD>right <TD>- <TD>+
+<TR><TD><code>&amp;</code> <TD>6 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>|</code> <TD>6 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>^</code> <TD>6 <TD>2 <TD>left <TD>+ <TD>+
+<TR><TD><code>&amp;&amp;</code> <TD>5 <TD>2 <TD>left <TD>+ <TD>-
+<TR><TD><code>||</code> <TD>4 <TD>2 <TD>left <TD>+ <TD>-
+<TR><TD><code>? :</code> <TD>3 <TD>3 <TD>right <TD>+ <TD>-
+<TR><TD><code>..</code> <TD>3 <TD>3 <TD>none <TD>- <TD>+
+<TR><TD><code>=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>*=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>/=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>%=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>+=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>-=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>&lt;&lt;=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>&gt;&gt;=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>&amp;=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>|=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>^=</code> <TD>2 <TD>2 <TD>right <TD>+ <TD>-
+<TR><TD><code>?=</code> <TD>2 <TD>2 <TD>right <TD>- <TD>-
+<TR><TD><code>before</code> <TD>1 <TD>2 <TD>left <TD>- <TD>-
+<TR><TD><code>then</code> <TD>1 <TD>2 <TD>left <TD>- <TD>-
+</TABLE></div>
+
+<p>The operators of the extended language have the following descriptions:
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Syntax</b><TD><b>Priority</b><TD><b>Arity</b><TD><b>Assoc.</b><TD><b>Description</b>
+
+<TR><TD><code>=&gt;</code> <TD>15<BR>(postfix) <TD>2 <TD>left
+<TD><a href="#c_3.2.4">Function creation</a>.
+
+
+<TR><TD><code>+-</code> <TD>14<BR>(prefix) <TD>1 <TD>right
+<TD>Absolute numerical value
+
+<TR><TD><code>@</code> <TD>14 <TD>1 <TD>right
+<TD>Conversion to hexadecimal numeric literal
+
+<TR><TD><code>**</code> <TD>13 <TD>2 <TD>right
+<TD>Involution
+
+<TR><TD><code>/\</code> <TD>11 <TD>2 <TD>left
+<TD>Intersection (defined on <code>Collection</code>)
+
+<TR><TD><code>&lt;?</code> <TD>9 <TD>2 <TD>left
+<TD>Minimum value (defined on <code>Comparable</code>)
+
+<TR><TD><code>&gt;?</code> <TD>9 <TD>2 <TD>left
+<TD>Maximum value (defined on <code>Comparable</code>)
+
+<TR><TD><code>in</code> <TD>9 <TD>2 <TD>left
+<TD>Elementhood (defined on <code>Object</code> and <code>Collection</code>)
+
+<TR><TD><code>partof</code> <TD>9 <TD>2 <TD>left
+<TD>Subsethood (defined on <code>Collection</code>)
+
+<TR><TD><code>===</code> <TD>8 <TD>2 <TD>left
+<TD><a href="#c_2.2">Instance equality</a>
+
+<TR><TD><code>!==</code> <TD>8 <TD>2 <TD>left
+<TD><a href="#c_2.2">Instance inequality</a>
+
+<TR><TD><code>::</code> <TD>7 <TD>2 <TD>right
+<TD>List construction (defined on <code>Object and <code>List</code>)
+
+<TR><TD><code>&lt;&gt;</code> <TD>7 <TD>2 <TD>right
+<TD>Composition (defined on <code>Function</code>)
+
+<TR><TD><code>..</code> <TD>3 <TD>3 <TD>none
+<TD>Sequence creation (defined on <code>Comparable</code>, <code>Comparable</code> and <code>Function</code>). Further details are found <a href="#c_3.8">here</a>.
+
+<TR><TD><code>?=</code> <TD>2 <TD>2 <TD>right
+<TD>Assignment operator which evaluates to the original value of the target
+
+<TR><TD><code>before</code> <TD>1 <TD>2 <TD>left
+<TD>Evaluates both operands for side-effects, and yields the first value as result
+
+<TR><TD><code>then</code> <TD>1 <TD>2 <TD>left
+<TD>Evaluates both operands for side-effects, and yields the second value as result
+
+</TABLE></div>
+
+
+<p><a name="c_3.7"></a><H2>3.7 The let expression</H2>
+The <code>let</code> expression creates a new variable scope, which allows local declarations of any value. The whole expression evaluates to the value returned from the block, like a function body:
+
+<p><div class="Hcode">
+var f = let {<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;int x;<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;return fn()=&gt;++x;<BR>
+};
+</div><div class="Result">
+fn() =&gt; int
+</div><div class="Hcode">
+f();
+</div><div class="Result">
+1 : java.lang.Integer
+</div><div class="Hcode">
+f();
+</div><div class="Result">
+2 : java.lang.Integer
+</div>
+
+
+<p><a name="c_3.8"></a><H2>3.8 Sequences and the <code>for</code> statement</H2>
+Values of the <code>Iterator</code>, <code>Array</code>, <code>Collection</code>, <code>List</code>, <code>Set</code>, <code>String</code> and <code>StringBuffer</code> types are known as <i>sequences</i>. Complex sequences may easily be created using the <i>sequence creation operator</i> <code>..</code>, which takes two or three operands. The first and second operands are two <code>Comparable</code>s, which mark the lower and upper bound for the sequence (both inclusive). The third operand is the generator function, which generates the next sequence element from the previous; when this operand is <code>null</code>, then a simple addition or subtraction by 1 is used:
+
+<p><div class="Hcode">
+(List)(8..-2);
+</div><div class="Result">
+[8,7,6,5,4,3,2,1,0,-1,-2] : java.util.ArrayList
+</div><div class="Hcode">
+(List)(1..1000..let { int y=1; return fn(x)=>(y ?= x) + x; });
+</div><div class="Result">
+[1,2,3,5,8,13,21,34,55,89,144,233,377,610,987] : java.util.ArrayList
+</div>
+
+<p>Hojo contains a special kind of <code>for</code> statement, which allows easy iteration over any sequence of values. If the type of the variable is omitted, it will be inferred from the context, if possible:
+
+<p><div class="Hcode">
+var l = [];<BR>
+for x in "\b\t\n\f\r" {<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;// x.class == Character.class here<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;l += x;<BR>
+}<BR>
+l;
+</div><div class="Result">
+['\b','\t','\n','\f','\r'] : java.util.ArrayList
+</div><div class="Hcode">
+var l2 = [];<BR>
+for Integer x in "\b\t\n\f\r" {<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;// x is defined as Integer<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;l2 += x;<BR>
+}<BR>
+l;
+</div><div class="Result">
+[8,9,10,12,13] : java.util.ArrayList
+</div>
+
+<p><a name="c_3.9"></a><H2>3.9 Class declarations</H2>
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/statements.doc.html#247766">Local class declarations</a>
+are by definition not part of the core language, although these are legal statements
+in Java. This is motivated by the significant semantical differences between the syntactically similar local class declarations of the Hojo and Java languages: A class declaration in Hojo merely creates a container for Hojo values; this container is denoted a <i>HClass</i> (a Hojo class).
+<BR>The following syntactical differences exist:
+
+<ul>
+<li>No constructor may be defined. There is no such thing as a class name - the identifier used in the class declaration is the declared name of the resulting HClass variable.
+<li>In addition to the <code>final</code> modifier - which may be used in any local variable or argument declaration - only the <code>public</code> modifier may be used in the declarations of the class body. The <code>public</code> modifier signifies that the declared variable should be treated as an accessible member of the HClass; variables which are not declared <code>public</code> will not be accessible from the HClass.
+<li>Because the class declaration merely is a sequence of local variable declarations (or expression statements evaluated for side-effects), every local variable must be declared before the point at which it is referenced.
+<li>There is no support for multiple methods (function declarations) using the same name, because all local variables must have distinct names.
+</ul>
+
+<p>The example below defines an HClass, which can be used as a simple counter. The HClass contains the two accessible members <code>next</code> and <code>reset</code>. Because the memebrs of an HClass instance are treated as normal variables, the <code>final</code> declarations here signify that the variables may not be modified: 
+
+<p><div class="Hcode"><pre>
+class Counter {
+    int x;
+
+    public final int next() {
+        return ++x;
+    }
+
+    public final int reset() {
+        return x ?= 0;
+    }
+};
+</pre></div>
+
+
+<p><a name="c_3.10"></a><H2>3.10 Class instance creation expressions</H2>
+The Hojo language allows a constructor to be invoked without explicit use of the <code>new</code> keyword: a type name, or expression typed as HClass, may be suffixed a constructor argument list:
+
+<p><div class="Hcode">
+StringBuffer("initial");
+</div><div class="Result">
+initial : java.util.StringBuffer
+</div>
+
+<p>Since no constructors may be defined in an HClass, only the empty argument list may be used to instantiate an HClass:
+
+<p><div class="Hcode">
+// instantiate the counter from above. This is equivalent to<BR>
+// var c = Counter.newInstance();<BR>
+var c = Counter();
+</div>
+
+<p>When an HClass is instantiated, every statement contained in the class declaration is evaluated, in the order defined, and a new value - a so-called HObject (Hojo object) -, is the result. The <code>public</code> members of an HObject are accessed using the familiar <code>.</code> syntax:
+
+<p><div class="Hcode">
+c.next;
+</div><div class="Result">
+fn() => int
+</div><div class="Hcode">
+c.next();
+</div><div class="Result">
+1 : java.lang.Integer
+</div><div class="Hcode">
+c.next();
+</div><div class="Result">
+2 : java.lang.Integer
+</div><div class="Hcode">
+c.reset();
+</div><div class="Result">
+2 : java.lang.Integer
+</div><div class="Hcode">
+c.next();
+</div><div class="Result">
+1 : java.lang.Integer
+</div>
+
+<p>Note that no static type information is available to the compiler, unless the HObject is declared as a <a href="#c_4.2.4">compile-time constant</a>. In the above case, the code <code>c.next()</code> actually translates to <code>((Function)(c.next))()</code>, in which the (existence of the) value <code>c.next</code> is resolved at run time.
+
+
+<HR align="center" width="75%">
+<a name="c_4"></a><H1>4 Meta language</H1>
+<p>The <i>meta language</i> is used to control and give access to information about the Hojo <i>compiler</i> (which translates the core and extended language), <i>interpreter</i> (which interprets the meta language, and executes commands produced by the compiler), and their environment. The environment is realized through a so-called <i>observer</i>, which primarily is used to handle errors and to display command results. 
+<BR>The meta language contains 4 different types of constructs, which are described in the following sections. Common to nearly every meta language construct is the use of the <i>meta chararcter</i>, <code>#</code>, which is reserved for this purpose. 
+
+
+<p><a name="c_4.1"></a><H2>4.1 Information symbols</H2>
+A number of information symbols have been defined. These symbols, which consist of the meta character followed by an identifier, may be used anywhere, even in the primary language. This is possible because an information symbol is automatically transformed to a compile-time constant whenever it is encountered in the input. The available information symbols are listed below:
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Information symbol</b><TD><b>Description</b>
+<TR><TD><code>ans</code> <TD>This symbol is used as alias for the last command result.
+<TR><TD><code>#args</code> <TD>This array of strings contains the leftover arguments from the command line starting the interpreter.
+<TR><TD><code>#version</code> <TD>This double is the version of the Hojo language used by the interpreter.
+<TR><TD><code>#revision</code> <TD>This string contains a revision identification code for the interpreter.
+<TR><TD><code>#typeof</code> <TD>Evaluates to an integer constant which defines the lexical category of the string comprised of the following sequence of non-blank characters. If the string is not a specially defined lexical symbol (this includes identifiers and numeric, character and string literals), then the value is 0. A symbol which for which <code>#typeof</code> evaluates to 0 and which is not a punctuator, reserved word, operator, literal or macro name is said to be <i>lexically available</i>.
+<TR><TD><code>#valueof</code> <TD>Evaluates to the ID associated with the token comprised by the following sequence of non-blank characters (this may be <code>null</code> even when the string has a special lexical significance).
+<TR><TD><code>#source</code> <TD>Evaluates to the most recent URL from which input is being read, and which still contains unread input. If no such URL exists, then the value is <code>null</code>.
+<TR><TD><code>#line</code> <TD>Evaluates to the number of the line in <code>#source</code> (base 1) at which the symbol is found
+<TR><TD><code>#now</code> <TD>Evaluates to <code>System.currentTimeMillis()</code>
+<TR><TD><code>#out</code> <TD>This is the standard output writer of the observer.
+<TR><TD><code>#err</code> <TD>This is the standard error writer of the observer
+<TR><TD><code>#print</code> <TD>This function displays a string conversion of its single argument value on the standard output (<code>#out</code>)
+</TABLE></div>
+
+
+<p><a name="c_4.2"></a><H2>4.2 Directives</H2>
+The directives are commands of the meta language. Such commands may only be found at the top-level scope, or within a <a href="#c_4.3">conditionally translated block</a> - actually, the primary language commands are compiled and executed as the default operation of the interpreter, if its next input is not a meta language construct.
+<BR>The different directives and their operation will be explained in the following sections. Note that all directives must be terminated by the statement separator character, <code>;</code>.
+
+
+<p><a name="c_4.2.1"></a><H3>4.2.1 Macros</H3>
+The meta language allows for declaration of simple macros, which will replaced automatically when encountered. A new macro may be defined by
+
+<p><div class="Hcode">
+#define <i>name value</i>;
+</div>
+
+<p>and removed  by
+
+<p><div class="Hcode">
+#undef <i>name</i>;
+</div>
+
+<p>The <code><i>name</i></code> must be lexically available identifier, whereas the <code><i>value</i></code> is any primary language expression (this will be evaluated and converted to a <code>String</code>).
+<BR>A special feature is that two consequtive meta characters cause the following raw character sequence or string literal to be treated lexically as an identifier, which, in contrast to normal identifiers, will not be subject to macro substitutions. Such an identifier is denoted a <i>non-substituting identifier</i>. Thus
+
+<p><div class="Hcode">
+#define OBJ "new Object()";<BR>
+var ##"OBJ" = OBJ;
+</div><div class="Result">
+java.lang.Object@3b9a58 : java.lang.Object
+</div><div class="Hcode">
+OBJ;
+</div><div class="Result">
+java.lang.Object@5ed0f0 : java.lang.Object
+</div><div class="Hcode">
+OBJ;
+</div><div class="Result">
+java.lang.Object@27982 : java.lang.Object
+</div><div class="Hcode">
+##OBJ ;
+</div><div class="Result">
+java.lang.Object@3b9a58 : java.lang.Object
+</div><div class="Hcode">
+#typeof OBJ ;
+</div><div class="Result">
+-21 : java.lang.Integer
+</div><div class="Hcode">
+#valueof OBJ ;
+</div><div class="Result">
+"new Object()" : java.lang.String
+</div><div class="Hcode">
+#undef OBJ ;<BR>
+#typeof OBJ ;
+</div><div class="Result">
+0 : java.lang.Integer
+</div><div class="Hcode">
+OBJ;
+</div><div class="Result">
+java.lang.Object@3b9a58 : java.lang.Object
+</div>
+
+
+<p><a name="c_4.2.2"></a><H3>4.2.2 Package prefixes</H3>
+The package prefixes of the primary language may be customized in the meta language, as the example below shows:
+
+<p><div class="Hcode">
+var java = 4;
+</div><div class="Result">
+4 : java.lang.Integer
+</div><div class="Hcode">
+java;
+</div><div class="Error">
+&nbsp;&nbsp;&nbsp;&nbsp;H3005: Class java does not exist
+</div><div class="Hcode">
+#nopackage java;<BR>
+java;
+</div><div class="Result">
+4 : java.lang.Integer
+</div><div class="Hcode">
+java.lang.Object();
+</div><div class="Error">
+&nbsp;&nbsp;&nbsp;&nbsp;H3006: Field java.lang.Integer.lang does not exist
+</div><div class="Hcode">
+#package java;<BR>
+java.lang.Object();
+</div><div class="Result">
+java.lang.Object@30ce8f : java.lang.Object
+</div>
+
+<p>Note that a package prefix may be configured regardless of lexical availability.
+<BR>By default, the package prefixes are <code>java</code>, <code>javax</code>, <code>sun</code>, <code>com</code>, <code>org</code> and <code>net</code>.
+
+
+<p><a name="c_4.2.3"></a><H3>4.2.3 Type identifiers</H3>
+The type identifiers (class name alii) of the primary language may be configured by the <code>#import</code> directive, much like the <code>import</code> statement of the Java language, except that identifiers must be lexically available. Some examples:
+
+<p><div class="Hcode">
+// single type import. Note that inner class names<BR>
+// must contain the '$' character<BR>
+#import java.util.Map$Entry;
+</div><div class="Result">
+interface java.util.Map$Entry : java.lang.Class
+</div><div class="Hcode">
+#typeof Map$Entry ;
+</div><div class="Result">
+-20 : java.lang.Integer
+</div><div class="Hcode">
+#valueof Map$Entry ;
+</div><div class="Result">
+interface java.util.Map$Entry : java.lang.Class
+</div><div class="Hcode">
+<BR>
+// import using an explicit alias<BR>
+#import java.util.Random Rnd;
+</div><div class="Result">
+class java.util.Random : java.lang.Class
+</div><div class="Hcode">
+Rnd.class;
+</div><div class="Result">
+class java.util.Random : java.lang.Class
+</div><div class="Hcode">
+<BR>
+// import a specific range of types. If some alii are already defined,<BR>
+// e.g. the standard type List, then this will not be changed.<BR>
+#import java.util.[TreeSet, List]; 
+</div><div class="Result">
+{"TreeSet"} : java.lang.String[]
+</div><div class="Hcode">
+<BR>
+// import a whole package, if the alii are not already being used.<BR>
+// Note that the effect depends on the package manager.<BR>
+//<BR>
+// if the package manager is not present, this will have no effect:<BR>
+#import java.lang.ref.*;
+</div><div class="Result">
+{} : java.lang.String[]
+</div><div class="Hcode">
+// using the standard package manager, all existing class names in the<BR>
+// package are imported, if the identifiers are lexically available:<BR>
+#import java.lang.ref.*;
+</div><div class="Result">
+{"PhantomReference", "ReferenceQueue$Lock", "Reference$Lock", "SoftReference", "Finalizer$FinalizerThread", "ReferenceQueue", "Reference", "Finalizer", "Reference$ReferenceHandler", "ReferenceQueue$Null", "FinalReference", "WeakReference"} : java.lang.String[]
+</div><div class="Hcode">
+// using the extended package manager, only public classes are imported:<BR>
+#import java.lang.ref.*;
+</div><div class="Result">
+{"Reference", "WeakReference", "ReferenceQueue", "PhantomReference", "SoftReference"} : java.lang.String[]
+</div>
+
+<p>Any user defined type identifier may be removed using the <code>#export</code> directive, which has the same syntax as the <code>#import</code> directive. By default, the package <code>java.lang</code> is imported - but this may have no effect, if the package manager is not used.
+
+
+<p><a name="c_4.2.4"></a><H3>4.2.4 Literals (compile-time constants)</H3>
+The <code>null</code> literal, the <code>boolean</code> literals <code>true</code> and <code>false</code> and the <a href="#c_5">standard library</a> are fixed compile-time constants. However, any otherwise lexically available symbol may be declared as a literal:
+
+<p><div class="Hcode">
+#declare .alpha '\u03B1';<BR>
+#typeof .alpha ;
+</div><div class="Result">
+-18 : java.lang.Integer
+</div><div class="Hcode">
+#valueof .alpha ;
+</div><div class="Result">
+'&#945;' : java.lang.Character
+</div><div class="Hcode">
+<BR>
+// this removes the literal again.<BR>
+// N.B.: the blank space before the semicolon is significant!<BR>
+#undeclare .alpha ;
+</div>
+
+<p>A collection of values may be declared or undeclared using the special directives <code>#load</code> and <code>#unload:</code>
+
+<p><div class="Hcode">
+// equivalent to #declare x 5; #declare y 8; #declare z 13;<BR>
+#load [. x = 5, y = 8, z = 13 .];<BR>
+<BR>
+// both maps and collections may be unloaded<BR>
+#unload ["x","y","z"]
+</div>
+
+<p>Note that the above directives also accepts a HObject, in which case every <code>public</code> member of the HObject will be (un)declared using their given names. By default, the standard library <code>lib</code> (which is a HObject) is loaded.
+
+
+<p><a name="c_4.2.5"></a><H3>4.2.5 Operators</H3>
+The meta language allows custom (pure) operators to be defined, using any lexically available symbol as syntax and a function of suitable arity as semantics. The three directives <code>#op</code>, <code>#left</code> and <code>#right</code> are used to define custom operators. The following expression - which must evaluate to an integer from 0 to 15 - defines the operator's priority (cf. the <a href="#c_3.6">operator hierarchy</a>). The next following sequence of non-blank characters is the lexical syntax of the operator, while the operation itself is defined as the function specified in the next following expression. 
+<BR>The following rules must apply:
+
+<ul>
+<li>Priority 3 is exclusively used for ternary infix operators. Regardless of the directive used to define the operator, it will not associate. Furthermore, the third operand is syntactically optional, and will have the value <code>null</code> when unspecified.
+<li>Priority 14 is exclusively used for unary prefix operators. Regardless of the directive used to define the operator, it will associate to the right.
+<li>Priority 15 is exclusively used for unary postfix operators. Regardless of the directive used to define the operator, it will associate to the left.
+<li>The remaining priorities are reserved for binary infix operators, whose associativity will be determined by the directive used in the definition. 
+</ul>
+
+<p>Some examples:
+
+<p><div class="Hcode">
+// define the ternary operator *+<BR>
+#op 3 *+ fn(x,y,z)=&gt;x*y+z;<BR>
+5*+8;
+</div><div class="Result">
+40 : java.lang.Integer
+</div><div class="Hcode">
+5*+8*+3;
+</div><div class="Result">
+43 : java.lang.Integer
+</div><div class="Hcode">
+<BR>
+// define the postfix operator ^-1<BR>
+// (#op, #left and #right may all be used)<BR>
+#left 15 ^-1 fn(x)=&gt;1/x;<BR>
+5.0^-1;
+</div><div class="Result">
+0.2 : java.lang.Double
+</div><div class="Hcode">
+<BR>
+// define the prefix operator &#164;<BR>
+// (#op, #left and #right may all be used)<BR>
+#right 14 &#164; fn(x)=&gt;x==null?0:x.hasCode();<BR>
+&#164;"hasHcode"
+</div><div class="Result">
+147696667 : java.lang.Integer
+</div><div class="Hcode">
+<BR>
+// define the left-associative infix operator &gt;&lt; at priority 12<BR>
+#left 12 &gt;&lt; fn(x,y)=&gt;(Object[])x*y;<BR>
+new int[3] &gt;&lt; [1,2,3];
+</div><div class="Result">
+{{0, 1}, {0, 2}, {0, 3}, {0, 1}, {0, 2}, {0, 3}, {0, 1}, {0, 2}, {0, 3}} : java.lang.Object[][]
+</div><div class="Hcode">
+<BR>
+// lexical category for operators<BR>
+#typeof *+ ;
+</div><div class="Result">
+-19 : java.lang.Integer
+</div><div class="Hcode">
+<BR>
+// operator IDs are defined as<BR>
+// bit 30: left associativity. bit 29: right associativity.<BR>
+// bit 28-27 : arity. bit 26-23: priority.<BR>
+// bit 22-0: unique ID.<BR>
+@#valueOf ^-1 ;
+</div><div class="Result">
+"0x4f800011" : java.lang.String
+</div>
+
+<p>User defined operators may be removed <code>#nop</code> directive:
+
+<p><div class="Hcode">
+#nop *+ ;<BR>
+#nop ^-1 ;<BR>
+#nop &#164; ;<BR>
+#nop &gt;&lt; ;<BR>
+</div>
+
+
+<p><a name="c_4.2.6"></a><H3>4.2.6 Global variables</H3>
+Declared global variables may be removed using the <code>#remove directive</code>. This will not invalidate the operation of previously created code (functions or HClasses), although the variable cannot be referenced by code created after the removal of the variable:
+
+<p><div class="Hcode">
+// declare some variables<BR>
+int x,y,z;<BR>
+int f() {<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;return ++x;<BR>
+}<BR>
+<BR>
+// remove the variable x<BR>
+#remove x;<BR>
+this;<BR>
+</div><div class="Result">
+[.<BR>
+&nbsp;&nbsp;z = 0<BR>
+&nbsp;&nbsp;y = 0<BR>
+&nbsp;&nbsp;f = fn() => int<BR>
+.]
+</div><div class="Hcode">
+<BR>
+// f can still use the removed variable (x)<BR>
+f();
+</div><div class="Result">
+1 : java.lang.Integer;
+</div><div class="Hcode">
+f();
+</div><div class="Result">
+2 : java.lang.Integer;
+</div><div class="Hcode">
+<BR>
+// removes all global variables!<BR>
+#remove this;<BR>
+this;<BR>
+</div><div class="Result">
+[.<BR>
+.]
+</div>
+
+
+<p><a name="c_4.2.7"></a><H3>4.2.7 Input source selection</H3>
+The stream from which the interpreter takes its input may be set using the <code>#include</code> directive. The new input source is selected based on the value resulting from evaluating the following expression:
+
+<ul>
+<li>If the value is a file or URL, then the contents of the given URL is used as input (the file will be converted to an URL before it is used). The value of <code>#source</code> will be the included URL, while <code>#line</code> will start counting from 1.
+<li>Otherwise, if the value is an instance of <code>java.io.InputStream</code> or <code>java.io.Reader</code>, then this is used directly for input.
+<li>Otherwise, the value is converted to a string, and the contents of the string will be the new input.
+</ul>
+
+<p>Once the end of the new input has been reached, the interpretation continues from just after the <code>#include</code> directive. If the values of <code>#source</code> and <code>#line</code> changed as result of the inclusion, then the original values are restored. 
+<BR>Premature termination of an input source may be accomplished through the <code>#exit</code> directive:
+
+<p><div class="Hcode">
+// this has no effect!<BR>
+#include "#exit; #print(\"this won't happen!\");";
+</div>
+
+
+<p><a name="c_4.2.8"></a><H3>4.2.8 Environment control</H3>
+The <code>#pragma</code> directive is used to control the environment in which the interpreter is run, and to control implementation specific options in the interpreter itself. 
+<BR>A <code>#pragma</code> directive is followed by a name (an identifier) and a primary language expression, the value. If the identifier following the <code>#pragma</code> directive is the exact string <code>HOJO</code>, this is known as an <i>internal control directive</i>, while any other use of the <code>#pragma</code> directive is denoted an <i>external control directive</i>. Note that the internal control directives use an extra identifier following the string <code>HOJO</code> as the name. 
+<BR>Internal control directives are handled by the interpreter, while external control directives are handled by the observer. If the name is not recognized by the handler, then the directive  will be ignored, and a warning will be issued. Otherwise, the effect of the control directive depends on the implementation of the handler.
+<BR>See <a href="#ex_PRAGMA_H">here</a> for an example of an internal control directive.
+
+<p><a name="c_4.3"></a><H2>4.3 Conditional translation</H2>
+The <code>#if</code> command allows conditional translation of Hojo code; this is the only meta language construct which may be nested inside another meta language construct:
+
+<p><div class="Hcode"><pre>
+// this may produce 0, 1 or 2 #print(&#8230;) statements
+#if (#typeof DEBUG != 0) 
+#print("Debug mode: " + DEBUG);
+    #if (DEBUG)
+        #print("" + #source + "(" + #line + "): " + "some debug info");
+    #endif
+#endif
+</pre></div>
+
+
+<p><a name="c_4.4"></a><H2>4.4 OS commands</H2>
+A line of input which is prefixed by the meta character followed by a blank space is treated as a command line for the operating system. For example, the possible command-line options for the Hojo application may be viewed from within a Hojo interpreter by issuing the OS command
+
+<p><div class="Hcode">
+# java -jar hojo.jar -help
+</div>
+
+<p>When the process is run, its standard output will be redirected to <code>#out</code>, its standard error to <code>#err</code>, while the following lines of input to the interpreter will be redirected to the process' standard input. When the interpreter encounters a blank line of input, then the process' standard input is closed, and the interpretation proceeds normally. Note that if the first character of a line is a backslash, the backslash will be omitted from the input to the process. Thus an empty line may be sent to the process by giving a single backslash as input to the interpreter.
+<BR>Once the process' standard input has been closed, the process is given a short interval to terminate on its own before it is forcibly terminated (closing the process' standard input may not have any effect). This interval, which is 1000 ms by default, may be set through an internal control directive:
+
+<p><a name="ex_PRAGMA_H"></a><div class="Hcode">
+// increase the timeout to 5 seconds<BR>
+#pragma HOJO killDelay 5000;
+</div>
+
+<p>The result of the whole command is an array of two <code>StringBuffer</code>s, which contain the data read from the process' standard output and error streams.
+
+
+<HR align="center" width="75%">
+<a name="c_5"></a><H1>5 Standard library</H1>
+<p>The standard library of Hojo consists of the two <a href="#c_4.2.4">compile-time constants</a> <code>lib</code> and <code>os</code>. The former is a HObject containing a wide range of general-purpose functions, while the latter is a library (written entirely in Java), which provides a high-level interface to the operating system.
+<BR>The members of <code>lib</code> are denoted <i>standard functions</i>, while <code>os</code> is denoted the <i>OS interface</i>. By default, the standard functions are declared as compile-time constants, by the implicit command 
+
+<p><div class="Hcode">
+#load lib;
+</div>
+
+<p>The following sections briefly describe each of the standard functions, as well as the methods found in the OS interface.
+
+<p><a name="c_5.1"></a><H2>5.1 <code>all</code></H2>
+The standard function <code>all</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function predicate, java.util.Iterator sequence) => java.lang.Boolean
+</div><p>
+evaluates <code>predicate</code> for each value in <code>sequence</code>, and returns <code>false</code> as soon as an element is encountered for which the <code>predicate</code> evaluates to <code>false</code>. If no such element exists, then the return value is <code>true</code>.
+
+
+<p><a name="c_5.2"></a><H2>5.2 <code>app</code></H2>
+The standard function <code>app</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function operation, java.util.Iterator sequence) => void
+</div><p>
+applies <code>operation</code> to each value in <code>sequence</code>, discarding the return values.
+
+
+<p><a name="c_5.3"></a><H2>5.3 <code>async</code></H2>
+The standard function <code>async</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function operation, java.lang.Object[] arguments, java.lang.Boolean startImmediately = true) => com.aurata.hojo.lib.AsyncExecutor
+</div><p>
+creates a new thread, which as its only action will apply <code>operation</code> to the <code>arguments</code>. <code>startImmediately</code> determines whether the thread should be started as it is created.
+<BR>Note that all access to variables in Hojo is unsynchronized; explicit synchronization may be necessary when dealing with multiple threads.
+
+
+<p><a name="c_5.4"></a><H2>5.4 <code>choose</code></H2>
+The standard function <code>choose</code>, which has the signature
+<p><div class="Hcode">
+fn(java.util.Collection options, java.lang.String[] labels = null, boolean[] default = null, java.lang.String dlgTitle = "") => java.lang.Object
+</div><p>
+creates a new dialog having title <code>dlgTitle</code>, which contains a check box for each of the elements in <code>options</code>. The initial state of these check boxes is <code>true</code> when <code>default</code> is <code>null</code>, and is otherwise defined by the values of this array. If <code>labels</code> has the value <code>null</code>, then the default string representation of the <code>options</code> is used, otherwise the labels are taken from this array. 
+<BR>If the dialog is cancelled, no further action takes place, and the function returns <code>null</code>. Otherwise, the unchecked options are removed from the collection, and the return value is <code>options</code> if defaultSelection is <code>null</code>, and is otherwise the updated <code>defaultSelection</code>.
+
+
+<p><a name="c_5.5"></a><H2>5.5 <code>collate</code></H2>
+The standard function <code>collate</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.String, java.lang.String) => java.lang.Integer
+</div><p>
+is a <code>Comparator</code> which otherwise behaves as the function defined by
+<p><div class="Hcode">
+fn(String x, String y)=>java.text.Collator .getInstance().compare(x,y)
+</div><p>
+
+
+<p><a name="c_5.6"></a><H2>5.6 <code>copy</code></H2>
+The standard function <code>copy</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.String value) => void
+</div><p>
+copies the contents of the given string to the system clipboard.
+
+
+<p><a name="c_5.7"></a><H2>5.7 <code>count</code></H2>
+The standard function <code>count</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function predicate, java.util.Iterator sequence) => java.lang.Integer
+</div><p>
+evaluates the <code>predicate</code> for every value in the <code>sequence</code>, and returns the number of elements for which the <code>predicate</code> evaluated to <code>true</code>.
+
+
+<p><a name="c_5.8"></a><H2>5.8 <code>edit</code></H2>
+The standard function <code>edit</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.StringBuffer editBuffer, java.lang.String dlgTitle = "") => java.lang.StringBuffer
+</div><p>
+creates a new dialog having title <code>dlgTitle</code>, which allows editing of the text contained in <code>editBuffer</code>. The return value is <code>null</code> if the dialog is cancelled, and is the updated <code>editBuffer</code> otherwise.
+
+
+<p><a name="c_5.9"></a><H2>5.9 <code>filter</code></H2>
+The standard function <code>filter</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function predicate, java.util.Iterator sequence) => void
+</div><p>
+iterates over the <code>sequence</code> and removes the values for which the <code>predicate</code> returns <code>false</code>. Thus, the given <code>Iterator</code> must support the <code>remove()</code> operation.
+
+
+<p><a name="c_5.10"></a><H2>5.10 <code>find</code></H2>
+The standard function <code>find</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function predicate, java.lang.Object sequence, java.lang.Integer startIndex = 0, java.lang.Integer endIndex = -1) => java.lang.Integer
+</div><p>
+returns the index of the first element in <code>sequence</code>, starting from <code>startIndex</code> (inclusive) up to <code>endIndex</code> (exclusive; <code>-1</code> indicates that the entire sequence is used), for which the <code>predicate</code> evaluates to true. 
+<BR>If no such element exists, the return value is negative. 
+
+
+<p><a name="c_5.11"></a><H2>5.11 <code>foldl</code></H2>
+The standard function <code>foldl</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function operation, java.lang.Object startValue, java.util.Iterator sequence) => java.lang.Object
+</div><p>
+evaluates as
+<p><div class="Hcode">
+operation(sequence<sub><small>n-1</small></sub>, operation(sequence<sub><small>n-2</small></sub>, ( &#8230; operation(sequence<sub><small>0</small></sub>, startValue) &#8230; )))
+</div><p>
+for some sequence of length <code>n</code>.
+
+
+<p><a name="c_5.12"></a><H2>5.12 <code>foldr</code></H2>
+The standard function <code>foldr</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function operation, java.lang.Object startValue, java.util.List sequence) => java.lang.Object
+</div><p>
+evaluates as
+<p><div class="Hcode">
+operation(sequence[0], operation(sequence[1], ( &#8230; operation(sequence[n-1], startValue) &#8230; )))
+</div><p>
+for a list of length <code>n</code>.
+
+
+<p><a name="c_5.13"></a><H2>5.13 <code>grep</code></H2>
+The standard function <code>grep</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.String searchString, com.aurata.util.text.Pattern pattern, java.lang.Integer offset = 0, java.lang.Integer flags = 0) => java.util.List
+</div><p>
+returns a list of the matches of the <code>pattern</code> in the <code>searchString</code>, starting at the <code>offset</code>. The <code>flags</code> determine the operation in the following way:
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Flag</b><TD><b>Description</b>
+<TR><TD><code>grep.SUBSTRING</code><TD>The elements of the return value are the matched substrings. This is the default.
+<TR><TD><code>grep.INDEX</code><TD>The elements of the return value are <code>Integer</code> instances indicating the (absolute) offsets of the matches.
+<TR><TD><code>grep.INDEX_INDEX</code><TD>The elements of the return value are <code>int[]</code> instances whose elements are the (absolute) offset and end offset (exclusive) of a matched substring.
+<TR><TD><code>grep.INDEX_SIZE</code><TD>The elements of the return value are <code>int[]</code> instances whose elements are the (absolute) offset and length of a matched substring.
+<TR><TD><code>grep.NO_CASE</code><TD>The matching will be case insensitive.
+<TR><TD><code>grep.ONE_MATCH</code><TD>At most one match will be generated.
+</TABLE></div>
+
+
+<p><a name="c_5.14"></a><H2>5.14 <code>help</code></H2>
+The standard function <code>help</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.Class cls, com.aurata.util.text.Pattern discriminator = null, java.lang.Integer flags = 0) => java.lang.String
+</div><p>
+returns a string which lists the signature of the given class <code>cls</code> and its members. If the <code>discriminator</code> has a value different from <code>null</code>, then only the members having a name matched by this <code>Pattern</code> will be included in the listing. The <code>flags</code> are defined as follows:
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Flag</b><TD><b>Description</b>
+<TR><TD><code>help.PUBLIC</code><TD>Only the public members are listed (this is the default).
+<TR><TD><code>help.PROTECTED</code><TD>Both public and protected members are listed.
+<TR><TD><code>help.ALL</code><TD>Includes all interited members in the listing. Only declared members are listed by default.
+</TABLE></div>
+
+<p>See <a href="#ex_help">here</a> for an example of the output format.
+
+
+<p><a name="c_5.15"></a><H2>5.15 <code>iterate</code></H2>
+The standard function <code>iterate</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.Object tree, java.lang.Integer maxDepth = -1, java.lang.Integer flags = 15) => java.util.Iterator
+</div><p>
+generates an <code>Iterator</code> which will traverse the <code>tree</code> depth-first, left to right, to a maximal depth not exceeding the <code>maxDepth</code> (if this is not negative). The <code>flags</code> control the traversal in the following way:
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Flag</b><TD><b>Description</b>
+<TR><TD><code>iterate.ITERATOR</code><TD><code>Iterator</code> instances will be treated as subtrees whose descendants are the values returned by the iterator.
+<TR><TD><code>iterate.ARRAY</code><TD>Instances of an array class will be treated as subtrees whose descendants are the array elements.
+<TR><TD><code>iterate.COLLECTION</code><TD><code>Collection</code> instances will be treated as subtrees whose descendants are the elements returned by the iterator of the collection.
+<TR><TD><code>iterate.MAP</code><TD><code>Map</code> instances will be treated as subtrees whose descendants are the values returned by the iterator of the entry set.
+<TR><TD><code>iterate.ALL</code><TD>Includes all of the above flags. This is the default.
+</TABLE></div>
+
+
+<p><a name="c_5.16"></a><H2>5.16 <code>map</code></H2>
+The standard function <code>map</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function operation, java.util.Iterator sequence, java.util.Collection container = null) => java.util.Collection
+</div><p>
+applies the <code>operation</code> to each of the values in <code>sequence</code> and adds the return values to the <code>container</code> (a new container is created, if the given value is <code>null</code>. The return value is the (new) <code>container</code>.
+
+
+<p><a name="c_5.17"></a><H2>5.17 <code>mkLib</code></H2>
+The standard function <code>mkLib</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.Object classOrObject, com.aurata.util.text.Pattern mask) => java.util.Map
+</div><p>
+creates a <code>Map</code>, which contains an entry for each of the <code>public final static</code> fields defined in <code>classOrObject</code>, as well as its <code>public</code> methods, in the following way: The fields whose names are matched by the <code>mask</code> are eligible for selection. If <code>classOrObject</code> is a <code>Class</code>, then the <code>static</code> methods of this class are eligible, provided that their names are matched by the <code>mask</code>; otherwise, the <code>static</code> as well as instance methods are eligible, providing that their names are matched by the <code>mask</code>. Each eligible method is then converted to a function, and is stored in the resulting map if the method name has not already been used. If more than one function has the same name, then the resulting function will be the function having maximal arity, preferring the first encountered method in case of a tie.
+
+<p><code>mkLib</code> is convenient in conjunction with the <code>#load</code> meta command, to allow for easy access to a range of functions:
+
+<p><div class="Hcode">
+#load mkLib(Math.class);
+</div><div class="Result">
+{"random", "sin", "rint", "toDegrees", "ceil", "cos", "atan2", "pow", "toRadians", "atan", "IEEEremainder", "log", "exp", "asin", "E", "acos", "abs", "PI", "min", "max", "floor", "tan", "round", "sqrt"} : java.lang.String[]
+</div><div class="Hcode">
+cos(PI);
+</div><div class="Result">
+-1.0 : java.lang.Double
+</div>
+
+
+<p><a name="c_5.18"></a><H2>5.18 <code>msg</code></H2>
+The standard function <code>msg</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.Object message, java.lang.Object[] buttonLabels = null, java.lang.String dlgTitle = "") => java.lang.Integer
+</div><p>
+creates a new dialog having title <code>dlgTitle</code>, message <code>message</code>, and buttons labeled by the values found in <code>buttonLabels</code> (if this is <code>null</code>, then a single OK button is used). The return value is negative if the dialog was closed without using a button, and is otherwise the index of the button clicked.
+
+
+<p><a name="c_5.19"></a><H2>5.19 <code>partition</code></H2>
+The standard function <code>partition</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function predicate, java.util.Iterator sequence) => java.util.List[]
+</div><p>
+partitions the values of the <code>sequence</code> into two <code>List</code>s, the first of which contains the elements for which the <code>predicate</code> evaluates to <code>true</code>.
+
+
+<p><a name="c_5.20"></a><H2>5.20 <code>passwd</code></H2>
+The standard function <code>passwd</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.String message, java.lang.Integer columns = 10, java.lang.String dlgTitle = "") => char[]
+</div><p>
+creates a new dialog, which allows entry of a secret password. The dialog will have title <code>dlgTitle</code>, message <code>message</code>, and a password entry field of minimum <code>columns</code> columns. The return value is <code>null</code> if the dialog is cancelled, and is the entered password otherwise.
+
+
+<p><a name="c_5.21"></a><H2>5.21 <code>paste</code></H2>
+The standard function <code>paste</code>, which has the signature
+<p><div class="Hcode">
+fn() => java.lang.Object
+</div><p>
+returns the value stored in the system clipboard, or <code>null</code> if no such value exists. The returned value will encoded using the default data flavour of the stored value.
+
+
+<p><a name="c_5.22"></a><H2>5.22 <code>rev</code></H2>
+The standard function <code>rev</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.Object sequence) => java.lang.Object
+</div><p>
+creates a new sequence of the same type as <code>sequence</code> (although a <code>List</code> instance is returned in case the <code>sequence</code> is an <code>Iterator</code>), which contains the elements of the <code>sequence</code> in reverse order.
+
+
+<p><a name="c_5.23"></a><H2>5.23 <code>select</code></H2>
+The standard function <code>select</code>, which has the signature
+<p><div class="Hcode">
+fn(java.util.Collection options, java.lang.Boolean singleSelection = false, java.lang.String dlgTitle = "") => java.lang.Object
+</div><p>
+creates a new dialog having title <code>dlgTitle</code> whose sole contents are a list box containing an entry for each element of the <code>options</code>. <code>singleSelection</code> determines whether only one selection is allowed, and also determines the operation of the dialog:
+
+<ul>
+<li>If the dialog was cancelled, then the return value is <code>null</code>, and no further action takes place.
+<li>Otherwise, if the <code>options</code> has the value <code>null</code>, then dialog will contain a single input line, and the resulting value is the entered string. In this case, the value of <code>singleSelection</code> has no effect.
+<li>Otherwise, if <code>singleSelection</code> is <code>true</code>, the return value will be an <code>Integer</code> specifying the index of the item which was selected (only a single selection will be possible).
+<li>Otherwise, the unselected items will be removed from <code>options</code> before this value itself is returnend.
+</ul>
+
+
+<p><a name="c_5.24"></a><H2>5.24 <code>size</code></H2>
+The standard function <code>size</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.Object) => java.lang.Long
+</div><p>
+returns the size of the argument value. This is defined for non-<code>Iterator</code> sequences as well as for files.
+
+
+<p><a name="c_5.25"></a><H2>5.25 <code>sort</code></H2>
+The standard function <code>sort</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.Object array, java.lang.Integer loBound = 0, java.lang.Integer hiBound = -1, java.util.Comparator comparator = null) => java.lang.Object
+</div><p>
+sorts the elements of the <code>array</code> from the index <code>loBound</code> (inclusive) to index <code>hiBound</code> (exclusive; a negative value may be used for the length of the array), using the given ordering relation <code>comparator</code>. If the <code>array</code> is primitive, then the natural ordering relation is always used, regardless of the given <code>comparator</code> (<code>boolean</code> arrays are not sorted); otherwise, the default comparator is <code>op&lt;</code>. The return value is the sorted <code>array</code>.
+
+
+<p><a name="c_5.26"></a><H2>5.26 <code>split</code></H2>
+The standard function <code>split</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.String toSplit, com.aurata.util.text.Pattern divider, java.lang.Integer flags = 0) => java.util.List
+</div><p>
+returns the substrings of <code>toSplit</code> which remain after the substrings matched by <code>divider</code> have been removed. The <code>flags</code> control the match in the following way:
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Flag</b><TD><b>Description</b>
+<TR><TD><code>split.NO_CASE</code><TD>The matching will be case insensitive.
+<TR><TD><code>split.ONE_MATCH</code><TD>At most one match will be generated.
+</TABLE></div>
+
+
+<p><a name="c_5.27"></a><H2>5.27 <code>subst</code></H2>
+The standard function <code>subst</code>, which has the signature
+<p><div class="Hcode">
+fn(java.lang.StringBuffer replaceBuffer, com.aurata.util.text.Pattern searchString, com.aurata.hojo.lang.Function replaceStringGenerator = null, java.lang.Integer flags = 0) => java.lang.StringBuffer
+</div><p>
+replaces every match <i>m</i> of the <code>searchString</code> in <code>replaceBuffer</code> by the value <code>replaceStringGenerator == null ? "" : replaceStringGenerator(<i>m</i>)</code>, then returns the modified <code>replaceBuffer</code>. The <code>flags</code> control the match in the following way:
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Flag</b><TD><b>Description</b>
+<TR><TD><code>subst.NO_CASE</code><TD>The matching will be case insensitive.
+<TR><TD><code>subst.ONE_MATCH</code><TD>At most one match will be generated.
+</TABLE></div>
+
+
+<p><a name="c_5.28"></a><H2>5.28 <code>trans</code></H2>
+The standard function <code>trans</code>, which has the signature
+<p><div class="Hcode">
+fn(com.aurata.hojo.lang.Function operation, java.util.ListIterator sequence) => void
+</div><p>
+applies the <code>operation</code> to each of the elements in <code>sequence</code>, and stores the resulting value back into the place in the <code>sequence</code> from which it was taken. Thus, the given <code>Iterator</code> must support the <code>set()</code> operation.
+
+
+<p><a name="c_5.29"></a><H2>5.29 The OS interface</H2>
+The OS interface contains a wide range of methods for file and I/O operations, such as file listing, copying and deletion. The full signature of the library is presented here, using the format produced by the standard function <a href="#c_5.13"><code>help</code></a>:
+
+<p><div class="Hcode">
+#print(help(os.class));
+</div><a name="ex_help"></a><div class="Output"><pre>
+public class com.aurata.util.os.OsInterface implements java.lang.Cloneable {
+
+  public static final java.lang.String ARCH;
+  public static final char CHAR_EXT;
+  public static final char CHAR_SWITCH;
+  public static final com.aurata.util.os.OsInterface$FileComparator COMP_EXT_ASC;
+  public static final com.aurata.util.os.OsInterface$FileComparator COMP_EXT_DESC;
+  public static final com.aurata.util.os.OsInterface$FileComparator COMP_NAME_ASC;
+  public static final com.aurata.util.os.OsInterface$FileComparator COMP_NAME_DESC;
+  public static final com.aurata.util.os.OsInterface$FileComparator COMP_SIZE_ASC;
+  public static final com.aurata.util.os.OsInterface$FileComparator COMP_SIZE_DESC;
+  public static final com.aurata.util.os.OsInterface$FileComparator COMP_TIME_ASC;
+  public static final com.aurata.util.os.OsInterface$FileComparator COMP_TIME_DESC;
+  public static final java.lang.String DEFAULT_ENCODING;
+  public static final java.io.File HOME;
+  public static final java.net.URL HOME_URL;
+  public static final java.lang.String NAME;
+  public static final java.io.PrintWriter NULL;
+  public static final java.io.PrintWriter SYSERR;
+  public static final java.io.BufferedReader SYSIN;
+  public static final java.io.PrintWriter SYSOUT;
+  public static final java.lang.String VERSION;
+
+  public int cat(java.lang.Object) throws java.io.IOException {
+  }
+  public int cat(java.lang.Object, java.io.File) throws java.io.IOException {
+  }
+  public int cat(java.lang.Object, java.lang.String) throws java.io.IOException {
+  }
+  public int cat(java.lang.Object, java.io.Writer) throws java.io.IOException {
+  }
+  public int cat(java.lang.Object, java.io.OutputStream) throws java.io.IOException {
+  }
+  public int cat(java.lang.Object, java.lang.Object, boolean) throws java.io.IOException {
+  }
+  public java.io.File cd() {
+  }
+  public java.io.File cd(java.io.File) throws java.io.IOException {
+  }
+  public java.io.File cd(java.lang.String) throws java.io.IOException {
+  }
+  public java.lang.Object clone() {
+  }
+  public boolean cp(java.io.File, java.io.File) throws java.io.IOException {
+  }
+  public boolean cp(java.lang.String, java.lang.String) throws java.io.IOException {
+  }
+  public int cp(java.lang.Object[], java.io.File) throws java.io.IOException {
+  }
+  public int cp(java.lang.Object[], java.lang.String) throws java.io.IOException {
+  }
+  public int cp(java.util.Collection, java.io.File) throws java.io.IOException {
+  }
+  public int cp(java.util.Collection, java.lang.String) throws java.io.IOException {
+  }
+  public java.io.File[] dir() throws java.io.IOException {
+  }
+  public java.io.File[] dir(java.lang.String) throws java.io.IOException {
+  }
+  public java.io.File[] dir(java.lang.String, java.lang.String) throws java.io.IOException, java.lang.IllegalArgumentException {
+  }
+  public java.io.File[] dir(java.lang.String, java.lang.String, com.aurata.util.text.Pattern) throws java.io.IOException, java.lang.IllegalArgumentException {
+  }
+  public com.aurata.util.os.AttributeFile[] dirAll() throws java.io.IOException {
+  }
+  public com.aurata.util.os.AttributeFile[] dirAll(java.lang.String) throws java.io.IOException {
+  }
+  public com.aurata.util.os.AttributeFile[] dirAll(java.lang.String, java.lang.String) throws java.io.IOException, java.lang.IllegalArgumentException {
+  }
+  public com.aurata.util.os.AttributeFile[] dirAll(java.lang.String, java.lang.String, com.aurata.util.text.Pattern) throws java.io.IOException, java.lang.IllegalArgumentException {
+  }
+  public com.aurata.util.tools.HexEditor edit(java.lang.Object) throws java.io.IOException {
+  }
+  public com.aurata.util.os.AsyncProcess exec(java.lang.String) {
+  }
+  public com.aurata.util.os.AsyncProcess exec(java.lang.String[]) {
+  }
+  public com.aurata.util.os.AsyncProcess exec(java.lang.String, java.io.Writer, java.io.Writer) {
+  }
+  public com.aurata.util.os.AsyncProcess exec(java.lang.String[], java.io.Writer, java.io.Writer) {
+  }
+  public java.lang.String get(java.lang.String) {
+  }
+  public java.lang.String getEncoding() {
+  }
+  public com.aurata.util.os.AttributeFile[] ll() throws java.io.IOException {
+  }
+  public com.aurata.util.os.AttributeFile[] ll(java.lang.String) throws java.io.IOException {
+  }
+  public com.aurata.util.os.AttributeFile[] ll(java.lang.String, java.lang.String) throws java.io.IOException, java.lang.IllegalArgumentException {
+  }
+  public com.aurata.util.os.AttributeFile[] ll(java.lang.String, java.lang.String, com.aurata.util.text.Pattern) throws java.io.IOException, java.lang.IllegalArgumentException {
+  }
+  public java.lang.Object load(java.lang.Object) throws java.lang.ClassNotFoundException, java.io.IOException {
+  }
+  public java.io.File[] ls() throws java.io.IOException {
+  }
+  public java.io.File[] ls(java.lang.String) throws java.io.IOException {
+  }
+  public java.io.File[] ls(java.lang.String, java.lang.String) throws java.io.IOException, java.lang.IllegalArgumentException {
+  }
+  public java.io.File[] ls(java.lang.String, com.aurata.util.text.Pattern) throws java.io.IOException {
+  }
+  public java.io.File[] ls(java.lang.String, java.lang.String, com.aurata.util.text.Pattern) throws java.io.IOException, java.lang.IllegalArgumentException {
+  }
+  public boolean mv(java.io.File, java.io.File) throws java.io.IOException {
+  }
+  public boolean mv(java.lang.String, java.lang.String) throws java.io.IOException {
+  }
+  public boolean[] mv(java.lang.Object[], java.io.File) throws java.io.IOException {
+  }
+  public boolean[] mv(java.lang.Object[], java.lang.String) throws java.io.IOException {
+  }
+  public boolean[] mv(java.util.Collection, java.io.File) throws java.io.IOException {
+  }
+  public boolean[] mv(java.util.Collection, java.lang.String) throws java.io.IOException {
+  }
+  public java.io.File pwd() {
+  }
+  public java.lang.StringBuffer read(java.lang.Object) throws java.io.IOException {
+  }
+  public java.lang.StringBuffer read(java.lang.StringBuffer, java.lang.Object) throws java.io.IOException {
+  }
+  public com.aurata.util.struct.ByteBuffer readBytes(java.lang.Object) throws java.io.IOException {
+  }
+  public com.aurata.util.struct.ByteBuffer readBytes(com.aurata.util.struct.ByteBuffer, java.lang.Object) throws java.io.IOException {
+  }
+  public java.io.File resolve(java.io.File) throws java.io.IOException {
+  }
+  public java.io.File resolve(java.lang.String) throws java.io.IOException {
+  }
+  public java.io.File revert() throws java.io.IOException {
+  }
+  public boolean rm(java.io.File) throws java.io.IOException {
+  }
+  public boolean rm(java.lang.String) throws java.io.IOException {
+  }
+  public boolean[] rm(java.lang.Object[]) throws java.io.IOException {
+  }
+  public boolean[] rm(java.util.Collection) throws java.io.IOException {
+  }
+  public long save(java.io.Serializable, java.lang.Object) throws java.io.IOException {
+  }
+  public java.lang.String[] set() {
+  }
+  public java.lang.String set(java.lang.String, java.lang.String) {
+  }
+  public void setEncoding(java.lang.String) {
+  }
+  public java.io.InputStream toInputStream(java.lang.Object) throws java.io.IOException {
+  }
+  public java.io.OutputStream toOutputStream(java.lang.Object, boolean) throws java.io.IOException {
+  }
+  public java.io.Reader toReader(java.lang.Object) throws java.io.IOException {
+  }
+  public boolean touch(java.io.File) throws java.io.IOException {
+  }
+  public boolean touch(java.lang.String) throws java.io.IOException {
+  }
+  public boolean[] touch(java.lang.Object[]) throws java.io.IOException {
+  }
+  public boolean[] touch(java.util.Collection) throws java.io.IOException {
+  }
+  public boolean touch(java.io.File, long) throws java.io.IOException {
+  }
+  public boolean touch(java.lang.String, long) throws java.io.IOException {
+  }
+  public boolean[] touch(java.lang.Object[], long) throws java.io.IOException {
+  }
+  public boolean[] touch(java.util.Collection, long) throws java.io.IOException {
+  }
+  public java.io.Writer toWriter(java.lang.Object, boolean) throws java.io.IOException {
+  }
+  public static boolean isWildcardFile(java.lang.String) {
+  }
+  public static int read(java.lang.StringBuffer, java.io.Reader) throws java.io.IOException {
+  }
+  public static int read(java.lang.StringBuffer, java.io.InputStream) throws java.io.IOException {
+  }
+  public static int read(com.aurata.util.struct.ByteBuffer, java.io.InputStream) throws java.io.IOException {
+  }
+  public static int read(java.lang.StringBuffer, java.io.Reader, int) throws java.io.IOException {
+  }
+  public static int read(java.lang.StringBuffer, java.io.InputStream, int) throws java.io.IOException {
+  }
+  public static int read(com.aurata.util.struct.ByteBuffer, java.io.InputStream, int) throws java.io.IOException {
+  }
+  public static java.lang.String[] splitPath(java.lang.String) {
+  }
+  public static int transport(java.io.Reader, java.io.Writer) throws java.io.IOException {
+  }
+  public static int transport(java.io.InputStream, java.io.OutputStream) throws java.io.IOException {
+  }
+  public static int transport(java.io.Reader, java.io.Writer, int) throws java.io.IOException {
+  }
+  public static int transport(java.io.InputStream, java.io.OutputStream, int) throws java.io.IOException {
+  }
+  public static int transport(java.io.Reader, java.io.Writer, int, char[]) throws java.io.IOException {
+  }
+  public static int transport(java.io.InputStream, java.io.OutputStream, int, byte[]) throws java.io.IOException {
+  }
+
+}
+</pre></div>
+
+<p>A brief description of the different methods of the OS interface is found below
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Method name</b><TD><b>Description</b>
+<TR><TD><code>cat</code> <TD>Outputs the contents of the first argument (a <code>java.io.Reader</code>, <code>String</code>, <code>File</code>, <code>URL</code> or <code>Collection</code> of such) to the destination specified by the second argument. The return value is the number of characters transferred.
+<TR><TD><code>cd</code> <TD>Changes the <i>present working directory</i>.
+<TR><TD><code>cp</code> <TD>Copies the files specified by the first argument to the given destination directory, after the copy operation has been confirmed by the user.
+<TR><TD><code>dir</code> <TD>This is equivalent to <a href="#d_ls()"><code>ls()</code></a> with default switches <code>"-c"</code>.
+<TR><TD><code>dirAll</code> <TD>This is equivalent to <a href="#d_ls()"><code>ls()</code></a> with default switches <code>"-c -l"</code>.
+<TR><TD><code>edit</code> <TD>Reads the contents of the specified file into a hex editor.
+<TR><TD><code>exec</code> <TD>Creates a new process from to the given OS command line.
+<TR><TD><code>get</code> <TD>Returns the environment property having the given name (it must have been <code>set()</code> previously)
+<TR><TD><code>ll</code> <TD>This is equivalent to <a href="#d_ls()"><code>ls()</code></a> with default switches <code>"-l"</code>.
+<TR><TD><code>load</code> <TD>Creates a <code>java.io.ObjectInputStream</code> from the given location and returns the value of <code>readObject()</code> invoked on that stream.
+<TR><a name="d_ls()"></a><TD><code>ls</code> <TD>Creates a directory listing of the specified files, relative to the present working directory. The files may be specified in either of the following ways:
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Arguments</b><TD><b>Root listing directory</b><TD><b>File matching pattern</b><TD><b>Switches</b>
+<TR><TD><code>()</code> <TD><code>pwd()</code> <TD><code>(Pattern)".*"</code> <TD>default 
+<TR><TD><code>(String mask)</code> <TD>Specified by the first characters of <code>mask</code> up to the last occurence of <code>File.separator<code>, if any, and by <code>pwd()</code> otherwise. <TD>A <code>Pattern</code> constructed from the remaining part of <code>mask</code>, by substituting <code>".*"</code> for <code>"*"</code>, <code>".?"</code> for <code>"?"</code>, and by prefixing <code>"\\"</code> to any otherwise significant character in a POSIX regular expression. <TD>default 
+<TR><TD><code>(String switches, String mask)</code> <TD>As above. <TD>As above. <TD><code>switches</code>
+<TR><TD><code>(String dir, Pattern mask)</code> <TD><code>dir</code> <TD><code>mask</code> <TD>default 
+<TR><TD><code>(String switches, String dir, Pattern mask)</code> <TD><code>dir</code> <TD><code>mask</code> <TD><code>switches</code>
+</TABLE></div>
+
+<p>The contents of the switches may be any combination of the below (case sensitive) options, separated by spaces (if conflicting switches are given, then the last will have effect).
+
+<p><div align="center"><TABLE class="Tbl" border="2" cellspacing="2" cellpadding="2">
+<TR><TD><b>Switch</b><TD><b>Alternative syntax</b><TD><b>Description</b>
+<TR><TD><code>-N</code> <TD><code>--sort=name</code> <TD>Sort the files by their path name 
+<TR><TD><code>-X</code> <TD><code>--sort=ext</code> <TD>Sort the files by their extension (the characters following the last occurence of <code>'.'</code> in the path name), then by the beginning of the path name 
+<TR><TD><code>-S</code> <TD><code>--sort=size</code> <TD>Sort the files by their size 
+<TR><TD><code>-T</code> <TD><code>--sort=time</code> <TD>Sort the files by their modification time 
+<TR><TD><code>-R</code> <TD><code>--reverse</code> <TD>Perform sorting, if any, in descending order
+<TR><TD><code>-f</code> <TD><code>--file</code> <TD>List only files, not directories 
+<TR><TD><code>-h</code> <TD><code>--all</code> <TD>List all files, even hidden files 
+<TR><TD><code>-d</code> <TD><code>--directory</code> <TD>List only directories 
+<TR><TD><code>-l</code> <TD><code>--long</code> <TD>The files returned will show all their attributes (read/write access, size and modification time) when converted to a string.
+<TR><TD><code>-r</code> <TD><code>--recursive</code> <TD>Recurse through subdirectories 
+<TR><TD><code>-a</code> <TD><code>--absolute</code> <TD>The file names returned are absolute file names
+<TR><TD><code>-c</code> <TD><code>--nocase</code> <TD>The matching is case insensitive 
+</TABLE></div>
+
+<TR><TD><code>mv</code> <TD>Moves the specified files to the given location, after the operation has been confirmed by the user.
+<TR><TD><code>pwd</code> <TD>Returns the present working directory
+<TR><TD><code>read</code> <TD>Reads the contents of the specified file into a <code>StringBuffer</code>
+<TR><TD><code>readBytes</code> <TD>Reads from the given location into the given buffer.
+<TR><TD><code>resolve</code> <TD>Resolves a file name relative to the present working directory
+<TR><TD><code>revert</code> <TD>Changes the present working directory to the directory last given as argument to <code>cd()</code>
+<TR><TD><code>rm</code> <TD>Deletes the specified files or empty directories, after the user has confirmed this operation. 
+<TR><TD><code>save</code> <TD>Writes the given <code>Serializable</code> to a newly created <code>java.io.ObjectOutputStream</code> having the specified location.
+<TR><TD><code>set</code> <TD>Upates (or lists) the current environment value bindings. These are given as arguments to a process created by <code>exec()</code>.
+<TR><TD><code>splitPath</code> <TD>Splits a path string into an array of file names.
+<TR><TD><code>toInputStream</code> <TD>Converts the argument to an input stream (if necessary). This is defined for instances of <code>byte[]</code>, <code>File</code>, <code>URL</code> and <code>java.net.URLConnection</code>, converting <code>null</code> to <code>SYSIN</code>. Other types of argument yields a <code>null</code> return value.
+<TR><TD><code>toOutputStream</code> <TD>Converts the argument to an output stream (if necessary). <code>null</code> is converted to <code>SYSOUT</code>, while argument values which are not instances of <code>java.net.URLConnection</code> will be converted to a string which is resolved against the present working directory, thus giving a file for which a new file output stream is constructed and returned. The second argument specifies whether such a file output stream should append the file (if <code>true</code>) or overwrite it.
+<TR><TD><code>toReader</code> <TD>Converts the argument to a reader (if necessary). The conversion will be a new input stream reader constructed on the value returned by <code>toInputStream()</code>, if this value is not null, and a new string reader using the string value of the argument otherwise.
+<TR><TD><code>touch</code> <TD>Updates the modification date of the specified file(s) to the current system time (if omitted), or to the specified time. If a file does not exist, then a new, empty file will be created by this.
+<TR><TD><code>toWriter</code> <TD>Converts the argument to a writer (if necessary). The conversion will be a new output stream writer constructed on the value returned by <code>toOutputStream()</code>.
+<TR><TD><code>transport</code> <TD>Reads data from the given input and writes the read data to the given output. The third argument is a limit on the transfer size, the fourth argument is the buffer to use for the transfer.
+</TABLE></div>
+
+<HR align="center" width="75%">
+<a name="c_6"></a><H1>6 References</H1>
+<p>For further details about the Java programming language, refer to
+<BR><a href="http://java.sun.com/docs/books/jls/index.html">The Java language specification</a>
+
+<HR align="center" width="75%">
+<a name="c_7"></a><H1>7 Acknowledgements</H1>
+
+<p><small>Java is a trademark of Sun Microsystems, Inc. in the United States and other countries.</small>
+
+
+
+</body>
+</html>

@@ -717,10 +717,12 @@ public class HojoShell implements HojoConst {
         return mod.length() == 0 ? key : mod + " " + key;
     }
 
-    // find a resource, circumventing Java bug 4214785.
+    // find a resource
     private URL findResource(String name) {
-        URLClassLoader cl = (URLClassLoader)this.getClass().getClassLoader();
-        URL result = cl.findResource(name);
+        URL result = getClass().getClassLoader().getResource(name);
+        if (result == null) {
+            throw new RuntimeException("Can't locate resource: " + name);
+        }
         return result;
     }
 

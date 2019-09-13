@@ -137,10 +137,13 @@ apply:
   1. The language reference document (which was hand-written in WordPad)
      has not been completely updated with some language changes, and
      needs an update.
+     The file `test/example.hjo` should be consulted for up-to-date
+     code examples.
   2. Java Language/API features beyond 1.4 are not used.
   3. Javadoc coverage is incomplete (but all formatting errors have been fixed
      as part of the tool-assisted overhaul).
-  4. No formal test suite exists (Hojo is an example of _design-driven_
-     development). But the language/interpreter itself is a test tool -
-     Hojo code can exercise the underlying Java code, and regression-test
-     itself. More automated testing would be possible, of course.
+  4. No formal unit test suite exists, but the file `test/example.hjo`
+     can be used as a regression-test suite using the interpreter itself:
+     The example code in `test/example.hjo` should, when evaluated by the
+     interpreter as specified by `test/test.sh`, produce exactly
+     the output stored for reference in `test/expected.txt`.

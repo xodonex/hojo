@@ -1,0 +1,670 @@
+/// This script follows, sort-of, the examples in the (somewhat outdated)
+/// language guide, with slightly more, and more valid, examples:
+/// This script serves as a regression-test suite, and is hence expected
+/// to produce identical results regardless of the user environment.
+///
+/// Pragma directives etc. are used to ensure that output is as verbose
+/// as intended.
+/// Remove directives are used to re-use variable names, to keep in sync
+/// with the original examples in the language guide.
+
+
+// Don't include too many details in error traces
+#pragma traceLevel "0";
+
+// Use default (lenient) type checking
+#pragma strictTypes "1";
+
+// Use default warning level
+#pragma warnLevel "2";
+
+
+/* Introduction */
+
+
+// Produce 2 kinds of output in one go.
+#print("output") then [1, 2, 3];
+
+// Produce a runtime error
+1 / 0;
+
+// Demonstrate a warning without error
+int x = "87";
+
+
+/* All values are objects */
+
+#remove x;
+
+// declaring a number of integral type
+// yields a default value of 0 (or false)
+int x;
+
+// declaring a number of a reference type
+// yields the null reference as default value
+Double y;
+
+// numeric promotion on java.lang.Double
+// and java.lang.Integer
+(y = 3) * ++x / 2;
+
+// all literals are objects
+false.equals(new Boolean("false"));
+
+
+/* Equality comparisons */
+
+// .equals() comparison on arrays
+{0, "abc", false} == {null, "abc", false};
+{0, "abc", false} == {0.0, "abc", false};
+
+// numeric literals produce different object instances
+3 === 3;
+
+// the boolean literals produce a fixed value
+false === Boolean.FALSE && true === Boolean.TRUE;
+
+
+/* Types */
+
+// automatical type conversion
+// (with appropriate type strictness / warning level)
+var l = [];
+l = new int[3];
+
+// runtime method lookup
+// (with appropriate type strictness / warning level)
+Object o = 3;
+o.intValue();
+
+// equivalent to the Java code
+// java.util.TreeSet s = new java.util.TreeSet();
+// int i = s.size();
+var s = new java.util.TreeSet(), i = s.size();
+
+// the declared type of variable s:
+s.class;
+
+// the static type of an if-then-else expression is the
+// maximal type of the two alternative types
+(true ? 2 : 2.0).class;
+
+
+/* Class names */
+
+// Class-name vs. members are indistinguishable to the interpreter,
+// due to limited class information, absence of member inspection,
+// and, last but not least, limited look-ahead in the lexical analysis:
+java.lang.Math.PI;
+
+// A space must be used to explicitly separate the qualified class name
+// from the first member name:
+java.lang.Math .PI;
+
+
+/* String literals */
+
+#remove s;
+
+var s = "this string literal \
+    \spans multiple\
+\ lines";
+
+var r =`this is a
+	\`\raw\\`
+string quote`;
+
+
+/* Scope of variabes */
+
+x = 7;
+
+int f(int x) {
+    return this.x + super.x++ * 3;
+};
+
+f(3);
+this.x;
+f(3);
+this.x;
+
+
+/* Array creation expressions */
+
+// create an array of three elements of type int[][]
+new int[][][3];
+
+// this is not legal Hojo!
+new int[2][];
+
+
+/* Extended language */
+
+/* Numbers */
+
+#pragma warnLevel "1" ;
+
+// no explicit or implicit suffix,
+// value can be represented by an Integer
+1e3;
+
+// explicit suffix
+2.718i;
+
+// implicit 'b' suffix
+new byte[] { -8, 317 };
+
+// implicit conversion to float. Note that hexadecimal
+// numeric literals are converted to Float or Double
+// using an inverse unary integral conversion:
+(float)0x40490fdb;
+
+// long value
+0x000000001;
+
+
+/* Function declarations */
+
+#remove f;
+
+// forward declaration of function f
+double f(double x, int y);
+
+// define function g (using function f)
+double g(double x, int y) {
+    switch (y) {
+        case 0: return 1;
+        case 1: return x;
+        default: return y < 0 ? f(x, y) : g(x * x, y - 1);
+    }
+}
+
+// redefine f (using g)
+f = fn(double x, int y) => let {
+    switch (y) {
+        case 0: return 1;
+        case -1: return 1/x;
+        default: return y > 0 ? g(x, y) : f(1 / x, y + 1);
+    }
+};
+
+// show the result for some random values
+f(78934, 0);
+f(16, -1);
+f(42, 2);
+f(42, -3);
+
+
+// nested function declarations are allowed
+Function ff(int x) {
+    int f(y) {
+        return ++x + y;
+    }
+    return f;
+}
+
+// ... with higher-order functions and closures as result.
+var fff = ff(30);
+fff(11);
+fff(11);
+
+
+/* Lambda expressions */
+
+#remove f;
+
+// It is allowed to omit the type declaration
+fn(x)=>x;
+
+// A default parameter value may be supplied in the declaration.
+var f = fn(x = false) => x;
+
+// delimiters may be used as placeholders for omitted values
+f(,);
+
+// the parameter list may be shortened
+f();
+
+// type inferrence works for optional arguments, too
+fn(var x = 1.5, var y = null) => x + y;
+
+#remove f;
+
+// The last parameter in the declaration may be an excess parameter
+var f = fn(*args)=>args;
+f();
+f(1,2,3);
+
+
+/* Class member access functions */
+
+// static field access function
+Math=>PI;
+
+// static method function
+Math=>log(double);
+
+// instance method function
+String=>replace(char, char);
+
+
+/* Special functions */
+
+// using the * operator as a function
+foldl(op *, 1, 1..10);
+
+// type cast function
+op(String);
+
+// void function (identity function)
+op();
+
+// index function ((object, index) => element)
+op[];
+
+// constructor function for array class
+int[][]=>();
+
+// constructor function for ordinary class
+BigInteger=>(int, byte[]);
+
+
+/* Collections and maps */
+
+#remove l;
+
+// collection instance creation expression
+var l = [1, 2, 3];
+
+// empty places are allowed
+[, ,];
+
+// extended collection instance creation expression
+var l2 = new java.util.Vector(l) [4, 5, 6];
+
+// map instance creation expression.
+var m = [. x = 45, y = "y", z = null .];
+
+// extended map instance creation expression:
+var m2 = new java.util.TreeMap(m) [. w = 32, x = 38 .];
+
+// collection addition (using .add() or .addAll())
+l += [4, 5, 6];
+l + 7;
+
+// collection difference (using .remove() or .removeAll())
+l2 - [3, 4, 5];
+l2 - 6;
+
+// map addition (using .putAll())
+m2 + [. y = 3, v = 9 .];
+
+// equivalent to m2.get("x");
+m2.x;
+
+// equivalent to
+// let {
+//     var n = (Number)m2.get("t");
+//     m2.put("t", n + 1);
+//     return n == null ? 0 : n;
+// };
+m2.t++;
+m2;
+
+
+/* Tuples */
+
+#remove l;
+#remove l2;
+
+var l = {1,2, ,4, {1,3}};
+
+// the method .invoke(), which is implemented by any function,
+// can take a tuple as an argument list
+op*.invoke({2.3, 8});
+
+//  the multiplication operator yields the Cartesian product
+// when the argument values are tuples
+{"x", "y"} * {1,2,3,4};
+
+
+/* Index expressions and slices */
+
+// Strings and StringBuffers can be indexed or sliced
+// (though read-only):
+"chars"[0];
+"chars"[3,-1];
+
+// Lists can be sliced,
+[1,2][0];
+
+// and arrays, too.
+{1,2,3,4}[1,3];
+
+// The end index is optional (defaults to -1):
+"longSlice"[4,];
+
+
+/* The let expression */
+
+#remove f;
+
+var f = let {
+    int x;
+    return fn()=>++x;
+};
+
+f();
+f();
+
+
+/* Sequences and the for statement */
+
+#remove l;
+
+// Expand the sequence expression as a list
+(List)(8..-2);
+
+// Use a sequence expression with a custom generator function
+(List)(1..1000..let { int y=1; return fn(x)=>(y ?= x) + x; });
+
+// Iterate over any collection with "for", with type inference:
+var l = [];
+for x in "\b\t\n\f\r" {
+    // x is defined as Character here
+    l += x;
+}
+l;
+
+var l2 = [];
+for Integer x in "\b\t\n\f\r" {
+    // x is defined as Integer here, with automatic conversion
+    l2 += x;
+}
+l2;
+
+
+/* Class declarations */
+
+#pragma showOutput "false";
+
+class Counter {
+    int x;
+
+    public final int next() {
+        return ++x;
+    }
+
+    public final int reset() {
+        return x ?= 0;
+    }
+};
+
+#pragma showOutput "true";
+
+
+/* Class instance creation expressions */
+
+// Invocation without explicit 'new'
+StringBuffer("intitial");
+
+#pragma showOutput "false";
+
+// instantiate the counter from above. This is equivalent to
+// var c = Counter.newInstance();
+var c = Counter();
+
+#pragma showOutput "true";
+
+// Use the counter.
+c.next;
+c.next();
+c.next();
+c.reset();
+c.next();
+
+
+/* Meta language */
+
+/* Macros */
+
+// Define the macro 'EE'
+#define EE "(Double)0x4005bf0a8b145769";
+
+// Declare the variable 'EE' with the result of the macro expaionion as value
+var ##"EE" = EE;
+
+// The macro creates a new Double instance when its expansion is evaluated
+EE === EE;
+EE == EE;
+
+// Various properties (the space before ';' is significant!)
+#typeof EE ;
+#valueof EE ;
+
+// Remove the macro
+#undef EE ;
+#typeof EE ;
+
+// The variable 'EE' remains, with a pre-evaluated value
+EE;
+EE === EE;
+
+
+/* Package prefixes */
+
+#pragma warnLevel "0";
+#pragma strictTypes "2";
+
+// The package prefix shadows the variable
+var java = 4;
+java;
+
+// Without the package prefix, the variable is visible
+#nopackage java;
+java;
+
+// ... but class resolution will fail, because the missing package prefix
+// results in the attempt to access member "lang" in the value of "java".
+java.lang.String();
+
+// Go back to normal.
+#package java;
+#pragma warnLevel "4";
+
+java.lang.String();
+
+
+/* Type identifiers */
+
+// single type import. Note that inner class names
+// must contain the '$' character
+#import java.util.Map$Entry;
+#typeof Map$Entry ;
+#valueof Map$Entry ;
+
+// import using an explicit alias
+#import java.util.Random Rnd;
+Rnd.class;
+
+// import a specific range of types. If some alii are already defined,
+// e.g. the standard type List, then this will not be changed.
+#import java.util.[TreeSet, List];
+
+// import a whole package, if the alii are not already being used.
+// Note that the effect depends on the package manager,
+// The regression-test is run with the package manager disabled,
+// hence nothing is found.
+// (the package manager itself is a hack, due to lack of the necessary
+// API in Java; in recent versions (>= 9), some changes in the class loader
+// internals caused the old hack to stop working.
+// Explicit imports have always been desirable, so the feature is not missed.
+#import java.lang.ref.*;
+
+
+/* Literals */
+
+#declare .alpha '\u03B1';
+#typeof .alpha ;
+#valueof .alpha ;
+
+// this removes the literal again.
+#undeclare .alpha ;
+
+// equivalent to #declare x 5; #declare y 8; #declare z 13;
+#load [. x = 5, y = 8, z = 13 .];
+
+// both maps and collections may be unloaded
+#unload ["x","y","z"];
+
+
+/* Operators */
+
+// define the ternary operator *+
+#op 3 *+ fn(x,y,z)=>x*y+z;
+5*+8;
+5*+8*+3;
+
+// define the postfix operator ^-1
+#left 15 ^-1 fn(double x)=>1/x;
+5.0^-1;
+
+// define the prefix operator ¤
+#right 14 ¤ fn(x)=>(x==null) ? 0 : x.hashCode();
+¤"hashCode"*3;
+
+// define the left-associative infix operator >< at priority 12
+#left 12 >< fn(x,y)=>(Object[])x*y;
+new int[3] >< [1,2,3];
+
+// lexical category for operators
+#typeof *+ ;
+
+// operator IDs are defined as
+// bit 30: left associativity. bit 29: right associativity.
+// bit 28-27 : arity. bit 26-23: priority.
+// bit 22-0: unique ID.
+#valueof ^-1 ;
+
+// User defined operators may be removed by the #nop directive:
+#nop *+ ;
+#nop ^-1 ;
+#nop ¤ ;
+#nop >< ;
+
+
+/* Global variables */
+
+#pragma showOutput "false";
+#remove this;
+#pragma showOutput "true";
+
+
+// declare some variables
+int x,y,z;
+int f() {
+    return ++x;
+}
+
+// remove the variable x
+#remove x;
+this;
+
+// f can still use the removed (but captured) variable, x
+f();
+f();
+
+// remove all global variables!
+#remove this;
+this;
+
+
+/* Input source selection */
+
+// this has no effect!
+#include "#exit; #print(\"this won't happen!\");";
+
+
+/* Conditional translation */
+
+#declare DEBUG true;
+
+// this may produce 0, 1 or 2 #print(...) statements
+#if (#typeof DEBUG != 0)
+#print("Debug mode: " + DEBUG);
+    #if (DEBUG)
+        #print("" + #source + "(" + #line + "): " + "some debug info");
+    #endif
+#endif
+
+#undeclare DEBUG ;
+
+
+/* OS commands */
+
+// Invoke the command line, return a pair of StringBuffers,
+// containing the (raw) output to stdout and stderr.
+# cat
+Hello, world.
+Input is redirected to the command
+\
+and terminated by an empty line. (backslashes escape empty lines)
+
+
+/* Standard library */
+
+#remove l;
+#remove l2;
+
+// Show the members of the standard library, 'lib'.
+// 'lib' is loaded by default, hence all members are visible as
+// literals - such as 'help' itself:
+#print(help(lib.class, "[a-z]+"));
+
+// Simple examples with standard-library functions (non-GUI functions only!):
+
+var bitsets = classify(fn(int x)=>(x & 0x02)==0, 1..64);
+
+var l = (List)iterate({1,2,[5,7,[8,9,10],"foo"]});
+
+filter(fn(x)=>x != "foo", l);
+l;
+
+rev(l);
+
+sort(l);
+
+var l2 = map(fn(x)=>x**2, l);
+
+trans(Integer=>toString(), l2);
+app(#print, l2);
+
+subst("Regex substitution", "s.", "x");
+
+var fac100 = foldr(op*, 1i, 1..100);
+
+sizeof(l2);
+sizeof((String)fac100);
+
+
+// Load all members of Math as a "library".
+#load mkLib(Math.class);
+sqrt(2);
+cos(PI);
+
+
+/* The OS interface */
+
+// The built-in library 'os' basically provides the file-handling
+// functionality of a Un*x shell, in portable Java.
+// (Examples are few here, because results are depending on the environment).
+
+#pragma showOutput "false";
+
+// os.cat exists, but operates only on file[names] as arguments;
+// os.transport is an alternative that operates on streams/readers:
+os.transport(os.toReader("That's all, folks."), #out);
+
+// The REPL loop has minimum read-ahead at the top level,
+// hence System.exit() is invoked before reading the next input:
+System.exit(0);KTHXBYE

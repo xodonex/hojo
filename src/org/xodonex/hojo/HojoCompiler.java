@@ -2073,6 +2073,31 @@ public class HojoCompiler implements HojoConst {
                     break loop;
                 }
 
+                // handle scope references first.
+                if (isScopeRef) {
+                    lex.nextToken(TT_WORD, true);
+                    String name = lex.sval;
+
+                    if (name.equals(
+                            stx.reserved[RES_SUPER - RES_BASE_ID])) {
+                        // .super on a scope ref
+                        ((ScopeRef)primary).addLink();
+                        continue;
+                    }
+                    else {
+                        // .name on a scope ref - find the variable and
+                        // substitute
+                        if ((primary = ((ScopeRef)primary).link(env,
+                                              name)) == null) {
+                            throw new HojoException(null,
+                                HojoException.ERR_UNKNOWN_ID,
+                                new String[] { name },
+                                lex.currentLocation());
+                        }
+                        continue;
+                    }
+                }
+
                 switch (lex.id) {
                 case OP_FUNC:
                 case OP_DOT:
@@ -2117,28 +2142,6 @@ public class HojoCompiler implements HojoConst {
                     lex.pushBack();
                     lex.nextToken(TT_WORD, true);
                     String name = lex.sval;
-
-                    // handle scope references
-                    if (isScopeRef) {
-                        if (name.equals(
-                                stx.reserved[RES_SUPER - RES_BASE_ID])) {
-                            // .super on a scope ref
-                            ((ScopeRef)primary).addLink();
-                        }
-                        else {
-                            // .name on a scope ref - find the variable and
-                            // substitute
-                            if ((primary = ((ScopeRef)primary).link(env,
-                                    name)) == null) {
-                                throw new HojoException(null,
-                                        HojoException.ERR_UNKNOWN_ID,
-                                        new String[] { name },
-                                        lex.currentLocation());
-                            }
-                        }
-                        continue;
-                    }
-
                     Class base = typ.toClass();
 
                     // check for method invocation / function application

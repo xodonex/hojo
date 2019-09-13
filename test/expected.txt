@@ -1,0 +1,535 @@
+
+
+> Hojo 1.3.1.
+(C) 1998-2019 by Henrik Lauritzen.
+
+
+
+> 
+
+> 
+
+> 
+
+> output
+[1, 2, 3] : java.util.ArrayList
+
+> H5001: Runtime error "/ by zero" thrown from code
+(1 / 0);
+
+
+
+> 87 : java.lang.Integer
+
+> 87 : java.lang.Integer
+
+> 0 : java.lang.Integer
+
+> null
+
+> 1.5 : java.lang.Double
+
+> true : java.lang.Boolean
+
+> true : java.lang.Boolean
+
+> true : java.lang.Boolean
+
+> false : java.lang.Boolean
+
+> true : java.lang.Boolean
+
+> [] : java.util.ArrayList
+
+> [0, 0, 0] : java.util.ArrayList
+
+> 3 : java.lang.Integer
+
+> H6003: Method java.lang.Object.intValue() could not be found
+! <main input>(78):
+! o.intValue();
+!            ^ 
+
+3 : java.lang.Integer
+
+> 0 : java.lang.Integer
+
+> java.util.TreeSet.class : java.lang.Class
+
+> java.lang.Double.class : java.lang.Class
+
+> H3005: Class java.lang.Math.PI does not exist
+! <main input>(98):
+! java.lang.Math.PI;
+!                ^^ 
+
+
+
+> 3.141592653589793 : java.lang.Double
+
+> [] : java.util.TreeSet
+
+> "this string literal spans multiple lines" : java.lang.String
+
+> "this is a\n\t`\\raw\\`\nstring quote" : java.lang.String
+
+> 7 : java.lang.Integer
+
+> fn(int x) => int : org.xodonex.hojo.lang.func.HojoFunction
+
+> 24 : java.lang.Integer
+
+> 8 : java.lang.Integer
+
+> 27 : java.lang.Integer
+
+> 9 : java.lang.Integer
+
+> {null, null, null} : int[][][]
+
+> H3022: Syntax error
+! <main input>(138):
+! new int[2][];
+!            ^ 
+
+
+
+> 
+
+> 1000 : java.lang.Integer
+
+> 2 : java.math.BigInteger
+
+> {-8, 61} : byte[]
+
+> 3.1415927 : java.lang.Float
+
+> 1 : java.lang.Long
+
+> fn(int x) => int : org.xodonex.hojo.lang.func.HojoFunction
+
+> 
+
+> fn(double x, int y) => double : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn(double x, int y) => java.lang.Double : org.xodonex.hojo.lang.func.HojoFunction
+
+> 1.0 : java.lang.Double
+
+> 0.0625 : java.lang.Double
+
+> 1764.0 : java.lang.Double
+
+> 0.023809523809523808 : java.lang.Double
+
+> fn(int x) => org.xodonex.hojo.lang.Function : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn(java.lang.Object y) => int : org.xodonex.hojo.lang.func.HojoFunction
+
+> 42 : java.lang.Integer
+
+> 43 : java.lang.Integer
+
+> fn(double x, int y) => java.lang.Double : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn(java.lang.Object x) => java.lang.Object : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn(java.lang.Object x = false) => java.lang.Object : org.xodonex.hojo.lang.func.HojoFunction
+
+> false : java.lang.Boolean
+
+> false : java.lang.Boolean
+
+> fn(java.lang.Double x = 1.5d, java.lang.Object y = null) => java.lang.Double : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn(java.lang.Object x = java.lang.Boolean@5f282abb) => java.lang.Object : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn(* args) => java.lang.Object[] : org.xodonex.hojo.lang.func.HojoFunction
+
+> {} : java.lang.Object[]
+
+> {1, 2, 3} : java.lang.Object[]
+
+> fn() => double : org.xodonex.hojo.lang.func.FieldFunction
+
+> fn(double) => double : org.xodonex.hojo.lang.func.MethodFunction
+
+> fn(java.lang.String, char, char) => java.lang.String : org.xodonex.hojo.lang.func.MethodFunction
+
+> 3628800 : java.lang.Integer
+
+> fn(java.lang.Object) => java.lang.String : org.xodonex.hojo.lang.func.TypeCastFunction
+
+> fn(java.lang.Object) => java.lang.Object : org.xodonex.hojo.lang.ops.IdOp
+
+> fn(java.lang.Object, int) => java.lang.Object : org.xodonex.hojo.lang.func.IndexFunction
+
+> fn(int, int) => int[][] : org.xodonex.hojo.lang.func.AllocatorFunction
+
+> fn(int, byte[]) => java.math.BigInteger : org.xodonex.hojo.lang.func.ConstructorFunction
+
+> [0, 0, 0] : java.util.ArrayList
+
+> [1, 2, 3] : java.util.ArrayList
+
+> [null, null] : java.util.ArrayList
+
+> [1, 2, 3, 4, 5, 6] : java.util.Vector
+
+> [.
+  x = 45 : java.lang.Integer
+  y = "y" : java.lang.String
+  z = null
+.] : java.util.HashMap
+
+> [.
+  w = 32 : java.lang.Integer
+  x = 38 : java.lang.Integer
+  y = "y" : java.lang.String
+  z = null
+.] : java.util.TreeMap
+
+> [1, 2, 3, 4, 5, 6] : java.util.ArrayList
+
+> [1, 2, 3, 4, 5, 6, 7] : java.util.ArrayList
+
+> [1, 2, 6] : java.util.Vector
+
+> [1, 2] : java.util.Vector
+
+> [.
+  v = 9 : java.lang.Integer
+  w = 32 : java.lang.Integer
+  x = 38 : java.lang.Integer
+  y = 3 : java.lang.Integer
+  z = null
+.] : java.util.TreeMap
+
+> 38 : java.lang.Integer
+
+> 0 : java.lang.Integer
+
+> [.
+  t = 1 : java.lang.Integer
+  v = 9 : java.lang.Integer
+  w = 32 : java.lang.Integer
+  x = 38 : java.lang.Integer
+  y = 3 : java.lang.Integer
+  z = null
+.] : java.util.TreeMap
+
+> [1, 2, 3, 4, 5, 6, 7] : java.util.ArrayList
+
+> [1, 2] : java.util.Vector
+
+> {1, 2, null, 4, {1, 3}} : java.lang.Object[]
+
+> 18.4 : java.lang.Double
+
+> {{"x", 1}, {"x", 2}, {"x", 3}, {"x", 4}, {"y", 1}, {"y", 2}, {"y", 3}, {"y", 4}} : java.lang.Object[][]
+
+> 'c' : java.lang.Character
+
+> "rs" : java.lang.String
+
+> 1 : java.lang.Integer
+
+> [2, 3] : org.xodonex.util.struct.PrimitiveArrayList
+
+> "Slice" : java.lang.String
+
+> fn(* args) => java.lang.Object[] : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn() => int : org.xodonex.hojo.lang.func.HojoFunction
+
+> 1 : java.lang.Integer
+
+> 2 : java.lang.Integer
+
+> {1, 2, null, 4, {1, 3}} : java.lang.Object[]
+
+> [8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2] : java.util.ArrayList
+
+> [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987] : java.util.ArrayList
+
+> [] : java.util.ArrayList
+
+> 
+
+> ['\b', '\t', '\n', '\f', '\r'] : java.util.ArrayList
+
+> [] : java.util.ArrayList
+
+> 
+
+> [8, 9, 10, 12, 13] : java.util.ArrayList
+
+> 
+
+> 
+
+> 
+
+> intitial : java.lang.StringBuffer
+
+> 
+
+> 
+
+> 
+
+> fn() => int : org.xodonex.hojo.lang.func.HojoFunction
+
+> 1 : java.lang.Integer
+
+> 2 : java.lang.Integer
+
+> 2 : java.lang.Integer
+
+> 1 : java.lang.Integer
+
+> "(Double)0x4005bf0a8b145769" : java.lang.String
+
+> 2.718281828459045 : java.lang.Double
+
+> false : java.lang.Boolean
+
+> true : java.lang.Boolean
+
+> -21 : java.lang.Integer
+
+> "(Double)0x4005bf0a8b145769" : java.lang.String
+
+> 
+
+> 0 : java.lang.Integer
+
+> 2.718281828459045 : java.lang.Double
+
+> true : java.lang.Boolean
+
+> 
+
+> 
+
+> 4 : java.lang.Integer
+
+> H3005: Class java does not exist
+! <main input>(461):
+! java;
+! ^^^^ 
+
+
+
+> null
+
+> 4 : java.lang.Integer
+
+> H5000: Runtime error : lang
+
+
+
+> 
+
+> 
+
+> "" : java.lang.String
+
+> java.util.Map$Entry.class : java.lang.Class
+
+> -20 : java.lang.Integer
+
+> java.util.Map$Entry.class : java.lang.Class
+
+> java.util.Random.class : java.lang.Class
+
+> java.util.Random.class : java.lang.Class
+
+> {"TreeSet"} : java.lang.String[]
+
+> {} : java.lang.String[]
+
+> 'α' : java.lang.Character
+
+> -18 : java.lang.Integer
+
+> 'α' : java.lang.Character
+
+> {'α'} : java.lang.Object[]
+
+> {"x", "y", "z"} : java.lang.String[]
+
+> {"x", "y", "z"} : java.lang.String[]
+
+> fn(java.lang.Object x, java.lang.Object y, java.lang.Object z) => java.lang.Object : org.xodonex.hojo.lang.func.HojoFunction
+
+> 40 : java.lang.Integer
+
+> 43 : java.lang.Integer
+
+> fn(double x) => java.lang.Double : org.xodonex.hojo.lang.func.HojoFunction
+
+> 0.2 : java.lang.Double
+
+> fn(java.lang.Object x) => java.lang.Integer : org.xodonex.hojo.lang.func.HojoFunction
+
+> 443090001 : java.lang.Integer
+
+> fn(java.lang.Object x, java.lang.Object y) => java.lang.Object[][] : org.xodonex.hojo.lang.func.HojoFunction
+
+> {{0, 1}, {0, 2}, {0, 3}, {0, 1}, {0, 2}, {0, 3}, {0, 1}, {0, 2}, {0, 3}} : java.lang.Object[][]
+
+> -19 : java.lang.Integer
+
+> 1333788689 : java.lang.Integer
+
+> fn(java.lang.Object x, java.lang.Object y, java.lang.Object z) => java.lang.Object : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn(double x) => java.lang.Double : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn(java.lang.Object x) => java.lang.Integer : org.xodonex.hojo.lang.func.HojoFunction
+
+> fn(java.lang.Object x, java.lang.Object y) => java.lang.Object[][] : org.xodonex.hojo.lang.func.HojoFunction
+
+> 
+
+> 
+
+> 
+
+> 0 : java.lang.Integer
+
+> fn() => int : org.xodonex.hojo.lang.func.HojoFunction
+
+> 0 : java.lang.Integer
+
+> [.
+  y = 0 : java.lang.Integer
+  z = 0 : java.lang.Integer
+  f = fn() => int : org.xodonex.hojo.lang.func.HojoFunction
+.] : org.xodonex.hojo.HojoRuntime$MapView
+
+> 1 : java.lang.Integer
+
+> 2 : java.lang.Integer
+
+> [.
+  y = 0 : java.lang.Integer
+  z = 0 : java.lang.Integer
+  f = fn() => int : org.xodonex.hojo.lang.func.HojoFunction
+.] : java.util.HashMap
+
+> [.
+.] : org.xodonex.hojo.HojoRuntime$MapView
+
+> true : java.lang.Boolean
+
+> Debug mode: true
+null(596): some debug info
+
+
+> {true} : java.lang.Object[]
+
+> Hello, world.
+Input is redirected to the command
+
+and terminated by an empty line. (backslashes escape empty lines)
+
+Process terminated. Exit code: 0
+{Hello, world.
+Input is redirected to the command
+
+and terminated by an empty line. (backslashes escape empty lines)
+, } : java.lang.StringBuffer[]
+
+> null
+
+> null
+
+> public final class org.xodonex.hojo.lib.StdLib {
+
+    public final org.xodonex.hojo.lib.AllFunction all;
+    public final org.xodonex.hojo.lib.AppFunction app;
+    public final org.xodonex.hojo.lib.AsyncFunction async;
+    public final org.xodonex.hojo.lib.CaptureFunction capture;
+    public final org.xodonex.hojo.lib.ChoiceFunction choose;
+    public final org.xodonex.hojo.lib.ClassifyFunction classify;
+    public final org.xodonex.hojo.lib.CollateFunction collate;
+    public final org.xodonex.hojo.lib.CopyFunction copy;
+    public final org.xodonex.hojo.lib.CountifFunction countif;
+    public final org.xodonex.hojo.lib.CustomizeFunction customize;
+    public final org.xodonex.hojo.lib.EditFunction edit;
+    public final org.xodonex.hojo.lib.FchooseFunction fchoose;
+    public final org.xodonex.hojo.lib.FilterFunction filter;
+    public final org.xodonex.hojo.lib.FindFunction find;
+    public final org.xodonex.hojo.lib.FoldlFunction foldl;
+    public final org.xodonex.hojo.lib.FoldrFunction foldr;
+    public final org.xodonex.hojo.lib.FormatFunction format;
+    public final org.xodonex.hojo.lib.GrepFunction grep;
+    public final org.xodonex.hojo.lib.HelpFunction help;
+    public final org.xodonex.hojo.lib.IterateFunction iterate;
+    public final org.xodonex.hojo.lib.MapFunction map;
+    public final org.xodonex.hojo.lib.MessageFunction msg;
+    public final org.xodonex.hojo.lib.PartitionFunction partition;
+    public final org.xodonex.hojo.lib.PasswordFunction passwd;
+    public final org.xodonex.hojo.lib.PasteFunction paste;
+    public final org.xodonex.hojo.lib.RevFunction rev;
+    public final org.xodonex.hojo.lib.SelectFunction select;
+    public final org.xodonex.hojo.lib.ShowFunction show;
+    public final org.xodonex.hojo.lib.SizeFunction sizeof;
+    public final org.xodonex.hojo.lib.SortFunction sort;
+    public final org.xodonex.hojo.lib.SplitFunction split;
+    public final org.xodonex.hojo.lib.SubstFunction subst;
+    public final org.xodonex.hojo.lib.TransFunction trans;
+
+}
+
+null
+
+> [.
+  false = [2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31, 34, 35, 38, 39, 42, 43, 46, 47, 50, 51, 54, 55, 58, 59, 62, 63] : java.util.ArrayList
+  true = [1, 4, 5, 8, 9, 12, 13, 16, 17, 20, 21, 24, 25, 28, 29, 32, 33, 36, 37, 40, 41, 44, 45, 48, 49, 52, 53, 56, 57, 60, 61, 64] : java.util.ArrayList
+.] : java.util.HashMap
+
+> [1, 2, 5, 7, 8, 9, 10, "foo"] : java.util.ArrayList
+
+> null
+
+> [1, 2, 5, 7, 8, 9, 10] : java.util.ArrayList
+
+> [10, 9, 8, 7, 5, 2, 1] : java.util.ArrayList
+
+> [1, 2, 5, 7, 8, 9, 10] : java.util.ArrayList
+
+> [1, 4, 25, 49, 64, 81, 100] : java.util.ArrayList
+
+> null
+
+> 1
+4
+25
+49
+64
+81
+100
+null
+
+> Regex xbxitution : java.lang.StringBuffer
+
+> 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000 : java.math.BigInteger
+
+> 7 : java.lang.Long
+
+> 158 : java.lang.Long
+
+> {"E", "PI", "abs", "acos", "addExact", "asin", "atan", "atan2", "cbrt", "ceil", "copySign", "cos", "cosh", "decrementExact", "exp", "expm1", "floor", "floorDiv", "floorMod", "fma", "getExponent", "hypot", "IEEEremainder", "incrementExact", "log", "log10", "log1p", "max", "min", "multiplyExact", "multiplyFull", "multiplyHigh", "negateExact", "nextAfter", "nextDown", "nextUp", "pow", "random", "rint", "round", "scalb", "signum", "sin", "sinh", "sqrt", "subtractExact", "tan", "tanh", "toDegrees", "toIntExact", "toRadians", "ulp"} : java.lang.String[]
+
+> 1.4142135623730951 : java.lang.Double
+
+> -1.0 : java.lang.Double
+
+> 
+
+> That's all, folks.
+
+> 

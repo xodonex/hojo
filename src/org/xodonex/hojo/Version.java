@@ -23,9 +23,9 @@ package org.xodonex.hojo;
  */
 public class Version {
     public final static double VERSION = 1.3;
-    public final static String REVISION = "0";
+    public final static String REVISION = "1";
     public final static String EDITION = "20th anniversary edition";
-    public final static String COPYRIGHT = "Hojo 1.3.0.\n(C) 1998-2018 by Henrik Lauritzen.\n";
+    public final static String COPYRIGHT = "Hojo 1.3.1.\n(C) 1998-2019 by Henrik Lauritzen.\n";
 
     private Version() {
     }
